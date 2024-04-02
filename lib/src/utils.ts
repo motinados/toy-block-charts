@@ -7,12 +7,15 @@ export function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function calcRamdomRectDimensions(area: number) {
+export function calcRamdomRectDimensions(area: number): {
+  width: number;
+  height: number;
+} {
   const ratioWidth = getRandomInt(1, 10);
   const ratioHeight = getRandomInt(1, 10);
   const height = Math.sqrt(area * (ratioHeight / ratioWidth));
   const width = area / height;
-  return [width, height, ratioWidth, ratioHeight];
+  return { width, height };
 }
 
 export function getRandomColor() {

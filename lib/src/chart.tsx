@@ -5,14 +5,26 @@ import {
   getRandomColor,
 } from "./utils";
 
-function dimensionsToBlock(dimensions: number[]) {
+function dimensionsToBlock(dimensions: { width: number; height: number }) {
   return {
     x: 0,
     y: 0,
-    width: dimensions[0],
-    height: dimensions[1],
+    width: dimensions.width,
+    height: dimensions.height,
     fill: getRandomColor(),
   };
+}
+
+function createBlocks(dimensionsList: { width: number; height: number }[]) {
+  const blocks = [];
+  let prevY = 0;
+  for (const dimensions of dimensionsList) {
+    const block = dimensionsToBlock(dimensions);
+    block.y = prevY;
+    prevY += block.height;
+    blocks.push(block);
+  }
+  return blocks;
 }
 
 export default function Chart() {
@@ -23,11 +35,11 @@ export default function Chart() {
     calcRamdomRectDimensions(percentage * 100)
   );
 
-  const blocks = dimensionsList.map(dimensionsToBlock);
+  const blocks = createBlocks(dimensionsList);
 
   return (
     <div>
-      <svg width="100" height="100">
+      <svg width="100" height="400">
         {blocks.map((block, index) => (
           <Block key={index} {...block} />
         ))}
