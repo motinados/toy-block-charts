@@ -14,3 +14,7 @@ export function calcRamdomRectDimensions(area: number) {
   const width = area / height;
   return [width, height, ratioWidth, ratioHeight];
 }
+
+export function getRandomColor() {
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+}
