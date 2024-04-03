@@ -3,6 +3,7 @@ import {
   calcOrderdDimenstionsList,
   calcPercentages,
   getRandomColor,
+  makeSampleData,
 } from "./utils";
 
 function dimensionsToBlock(dimensions: { width: number; height: number }) {
@@ -38,7 +39,7 @@ function createBlocks(
 export default function Chart() {
   const svgWidth = 100;
   const svgHeight = 400;
-  const data = [10, 20, 30, 40, 50];
+  const data = makeSampleData(5);
   const percentages = calcPercentages(data);
   percentages.sort((a, b) => a - b);
   const dimensionsList = calcOrderdDimenstionsList(

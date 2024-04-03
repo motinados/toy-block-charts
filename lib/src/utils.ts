@@ -42,3 +42,7 @@ export function calcOrderdDimenstionsList(
     height: calcHeight(area, widths[index]),
   }));
 }
+
+export function makeSampleData(size: number) {
+  return Array.from({ length: size }, () => getRandomInt(1, 100));
+}
