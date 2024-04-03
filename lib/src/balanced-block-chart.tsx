@@ -38,7 +38,7 @@ function createBlocks(
   return blocks;
 }
 
-export default function Chart() {
+export default function BalancedBlockChart() {
   const svgWidth = 100;
   const svgHeight = 400;
   const data = makeSampleData(5);

@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
-import Chart from "./chart";
+import BalancedBlockChart from "./balanced-block-chart";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: "Example/Chart",
-  component: Chart,
+  component: BalancedBlockChart,
   parameters: {
     layout: "centered",
   },
@@ -14,7 +14,7 @@ const meta = {
     backgroundColor: { control: "color" },
   },
   args: { onClick: fn() },
-} satisfies Meta<typeof Chart>;
+} satisfies Meta<typeof BalancedBlockChart>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
