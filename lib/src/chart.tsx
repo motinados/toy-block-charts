@@ -1,7 +1,7 @@
 import Block from "./block";
 import {
+  calcOrderdDimenstionsList,
   calcPercentages,
-  calcRamdomRectDimensions,
   getRandomColor,
 } from "./utils";
 
@@ -41,8 +41,8 @@ export default function Chart() {
   const data = [10, 20, 30, 40, 50];
   const percentages = calcPercentages(data);
   percentages.sort((a, b) => a - b);
-  const dimensionsList = percentages.map((percentage) =>
-    calcRamdomRectDimensions(percentage * 100)
+  const dimensionsList = calcOrderdDimenstionsList(
+    percentages.map((p) => p * 100)
   );
 
   const blocks = createBlocks(dimensionsList, svgWidth);
