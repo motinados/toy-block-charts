@@ -3,6 +3,7 @@ import {
   calcOrderdDimenstionsList,
   calcPercentages,
   getRandomColor,
+  getRandomInt,
   makeSampleData,
 } from "./utils";
 
@@ -30,7 +31,8 @@ function createBlocks(
     prevY += block.height;
 
     // Center the block
-    block.x = svgCenterX - block.width / 2;
+    const fluctuation = getRandomInt(-10, 10);
+    block.x = svgCenterX - block.width / 2 + fluctuation;
     blocks.push(block);
   }
   return blocks;
