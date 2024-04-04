@@ -4,7 +4,6 @@ import {
   calcPercentages,
   getRandomColor,
   getRandomInt,
-  makeSampleData,
 } from "./utils";
 
 function dimensionsToBlock(dimensions: { width: number; height: number }) {
@@ -38,10 +37,13 @@ function createBlocks(
   return blocks;
 }
 
-export default function BalancedBlockChart() {
+type BalancedBlockChartProps = {
+  data: number[];
+};
+
+export default function BalancedBlockChart({ data }: BalancedBlockChartProps) {
   const svgWidth = 100;
   const svgHeight = 400;
-  const data = makeSampleData(5);
   const percentages = calcPercentages(data);
   percentages.sort((a, b) => a - b);
   const dimensionsList = calcOrderdDimenstionsList(
