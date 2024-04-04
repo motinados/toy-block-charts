@@ -18,10 +18,8 @@ function dimensionsToBlock(dimensions: { width: number; height: number }) {
 
 function createBlocks(
   dimensionsList: { width: number; height: number }[],
-  svgWidth: number
+  svgCenterX: number
 ) {
-  const svgCenterX = svgWidth / 2;
-
   const blocks = [];
   let prevY = 0;
   for (const dimensions of dimensionsList) {
@@ -42,23 +40,41 @@ type BalancedBlockChartProps = {
 };
 
 export default function BalancedBlockChart({ data }: BalancedBlockChartProps) {
-  const svgWidth = 100;
-  const svgHeight = 400;
+  const svgWidth = 400;
+  const svgHeight = 200;
   const percentages = calcPercentages(data);
   percentages.sort((a, b) => a - b);
   const dimensionsList = calcOrderdDimenstionsList(
     percentages.map((p) => p * 100)
   );
 
-  const blocks = createBlocks(dimensionsList, svgWidth);
+  const svgCenterX = svgWidth / 2 - 50;
+  const blocks = createBlocks(dimensionsList, svgCenterX);
 
+  const legend: string[] = ["apple", "banana", "cherry", "date", "elderberry"];
   return (
-    <div>
-      <svg width={svgWidth} height={svgHeight}>
-        {blocks.map((block, index) => (
-          <Block key={index} {...block} />
+    <div style={{ display: "flex" }}>
+      <div>
+        <svg width={svgWidth} height={svgHeight}>
+          {blocks.map((block, index) => (
+            <Block key={index} {...block} />
+          ))}
+        </svg>
+      </div>
+      <div>
+        {legend.map((legend, index) => (
+          <div key={index} style={{ display: "flex", fontSize: "12px" }}>
+            <div
+              style={{
+                width: 12,
+                height: 12,
+                backgroundColor: blocks[index].fill,
+              }}
+            ></div>
+            {legend}
+          </div>
         ))}
-      </svg>
+      </div>
     </div>
   );
 }
