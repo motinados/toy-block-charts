@@ -41,7 +41,7 @@ type BalancedBlockChartProps = {
 
 export default function BalancedBlockChart({ data }: BalancedBlockChartProps) {
   const svgWidth = 400;
-  const svgHeight = 200;
+  const svgHeight = 300;
   const percentages = calcPercentages(data);
   percentages.sort((a, b) => a - b);
   const dimensionsList = calcOrderdDimenstionsList(
