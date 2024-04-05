@@ -53,28 +53,32 @@ export default function BalancedBlockChart({ data }: BalancedBlockChartProps) {
 
   const legend: string[] = ["apple", "banana", "cherry", "date", "elderberry"];
   return (
-    <div style={{ display: "flex" }}>
-      <div>
-        <svg width={svgWidth} height={svgHeight}>
+    <>
+      <div style={{ display: "flex", width: "100%" }}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+          style={{ width: "80%", maxWidth: "100%", height: "auto" }}
+        >
           {blocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
         </svg>
+        <div style={{ width: "20%" }}>
+          {legend.map((legend, index) => (
+            <div key={index} style={{ display: "flex", fontSize: "12px" }}>
+              <div
+                style={{
+                  width: 12,
+                  height: 12,
+                  backgroundColor: blocks[index].fill,
+                }}
+              ></div>
+              {legend}
+            </div>
+          ))}
+        </div>
       </div>
-      <div>
-        {legend.map((legend, index) => (
-          <div key={index} style={{ display: "flex", fontSize: "12px" }}>
-            <div
-              style={{
-                width: 12,
-                height: 12,
-                backgroundColor: blocks[index].fill,
-              }}
-            ></div>
-            {legend}
-          </div>
-        ))}
-      </div>
-    </div>
+    </>
   );
 }
