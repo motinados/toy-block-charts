@@ -1,4 +1,4 @@
-import Block from "./block";
+import Block, { BlockItem } from "./block";
 import {
   calcOrderdDimenstionsList,
   calcPercentages,
@@ -19,7 +19,7 @@ function dimensionsToBlock(dimensions: { width: number; height: number }) {
 function createBlocks(
   dimensionsList: { width: number; height: number }[],
   svgCenterX: number
-) {
+): BlockItem[] {
   const blocks = [];
   let prevY = 0;
   for (const dimensions of dimensionsList) {
@@ -33,6 +33,21 @@ function createBlocks(
     blocks.push(block);
   }
   return blocks;
+}
+
+//Align BlockItem to the bottom of the svg based on svgHeight
+function alignToBottom(blocks: BlockItem[], svgHeight: number): BlockItem[] {
+  const resultBlocks: BlockItem[] = [];
+  const blocksHeight = blocks.reduce((acc, block) => acc + block.height, 0);
+  const diff = svgHeight - blocksHeight;
+
+  for (const block of blocks) {
+    const newBlock = { ...block };
+    newBlock.y += diff;
+    resultBlocks.push(newBlock);
+  }
+
+  return resultBlocks;
 }
 
 type BalancedBlockChartProps = {
@@ -49,7 +64,8 @@ export default function BalancedBlockChart({ data }: BalancedBlockChartProps) {
   );
 
   const svgCenterX = svgWidth / 2 - 50;
-  const blocks = createBlocks(dimensionsList, svgCenterX);
+  let blocks = createBlocks(dimensionsList, svgCenterX);
+  blocks = alignToBottom(blocks, svgHeight);
 
   const legend: string[] = ["apple", "banana", "cherry", "date", "elderberry"];
   return (
