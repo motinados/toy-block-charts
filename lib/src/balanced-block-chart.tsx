@@ -1,33 +1,31 @@
 import Block, { BlockItem } from "./block";
 import {
   calcWidthAndHeight,
-  // calcPercentages,
   calcPercentagesForData,
   getRandomColor,
   getRandomInt,
   shuffleArray,
 } from "./utils";
 
-function dimensionsToBlock(dimensions: { width: number; height: number }) {
+function datumToBlock(datum: { width: number; height: number }) {
   return {
     x: 0,
     y: 0,
-    width: dimensions.width,
-    height: dimensions.height,
+    width: datum.width,
+    height: datum.height,
     fill: getRandomColor(),
   };
 }
 
 function createBlocks(
-  dimensionsList: DatumWithWidthHeight[],
-  // colors: string[],
+  data: DatumWithWidthHeight[],
   svgCenterX: number
 ): BlockItem[] {
   const blocks = [];
   let prevY = 0;
-  for (const dimensions of dimensionsList) {
-    const block = dimensionsToBlock(dimensions);
-    block.fill = dimensions.color || getRandomColor();
+  for (const datum of data) {
+    const block = datumToBlock(datum);
+    block.fill = datum.color || getRandomColor();
     block.y = prevY;
     prevY += block.height;
 
@@ -79,12 +77,12 @@ export default function BalancedBlockChart({
   const svgWidth = 400;
   const svgHeight = 300;
 
-  const datumWithColor = data.map((d) => ({
+  const dataWithColor = data.map((d) => ({
     ...d,
     color: d.color || getRandomColor(),
   }));
 
-  const dataWithPercentage = calcPercentagesForData(datumWithColor);
+  const dataWithPercentage = calcPercentagesForData(dataWithColor);
   dataWithPercentage.sort((a, b) => a.percentage - b.percentage);
 
   let dataWithWidthHeight = calcWidthAndHeight(dataWithPercentage, 100);
@@ -95,10 +93,10 @@ export default function BalancedBlockChart({
     dataWithWidthHeight = shuffleArray(dataWithWidthHeight);
   }
 
-  const svgCenterX = svgWidth / 2 - 50;
+  const svgCenterX = svgWidth / 2;
   const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
   const finalBlocks = alignToBottom(blocks, svgHeight);
-  const legend = dataWithWidthHeight.map((d) => d.name);
+  const legendItems = dataWithWidthHeight.map((d) => d.name);
 
   return (
     <>
@@ -121,7 +119,7 @@ export default function BalancedBlockChart({
               height: "100%",
             }}
           >
-            {legend.map((str, index) => (
+            {legendItems.map((item, index) => (
               <div key={index} style={{ display: "flex", fontSize: "12px" }}>
                 <div
                   style={{
@@ -130,7 +128,7 @@ export default function BalancedBlockChart({
                     backgroundColor: finalBlocks[index].fill,
                   }}
                 ></div>
-                {str}
+                {item}
               </div>
             ))}
           </div>
