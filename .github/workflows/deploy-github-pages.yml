@@ -45,10 +45,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      #👇 Add Storybook build and deploy to GitHub Pages as a step in the workflow
-      - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.1
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build storybook
+        run: pnpm run build-storybook
+
+      - name: Upload Documents
+        uses: actions/upload-pages-artifact@v3
         with:
-          install_command: pnpm install # default: npm ci
-          build_command: pnpm run build-storybook # default: npm run build-storybook
-          path: app/storybook-static # default: dist/storybook
-          checkout: false # default: true
+          path: lib/storybook-static
