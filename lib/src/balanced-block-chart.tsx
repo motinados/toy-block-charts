@@ -7,25 +7,25 @@ import {
   shuffleArray,
 } from "./utils";
 
-function dimensionsToBlock(dimensions: { width: number; height: number }) {
+function datumToBlock(datum: { width: number; height: number }) {
   return {
     x: 0,
     y: 0,
-    width: dimensions.width,
-    height: dimensions.height,
+    width: datum.width,
+    height: datum.height,
     fill: getRandomColor(),
   };
 }
 
 function createBlocks(
-  dimensionsList: DatumWithWidthHeight[],
+  data: DatumWithWidthHeight[],
   svgCenterX: number
 ): BlockItem[] {
   const blocks = [];
   let prevY = 0;
-  for (const dimensions of dimensionsList) {
-    const block = dimensionsToBlock(dimensions);
-    block.fill = dimensions.color || getRandomColor();
+  for (const datum of data) {
+    const block = datumToBlock(datum);
+    block.fill = datum.color || getRandomColor();
     block.y = prevY;
     prevY += block.height;
 
