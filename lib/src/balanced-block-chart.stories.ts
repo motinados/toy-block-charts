@@ -20,6 +20,7 @@ export const StableBalanced: Story = {
   args: {
     type: "stable-balanced",
     data: [10, 20, 30, 40, 50],
+    legend: ["apple", "banana", "cherry", "date", "elderberry"],
   },
 };
 
@@ -27,6 +28,7 @@ export const UnstableInverted: Story = {
   args: {
     type: "unstable-inverted",
     data: [10, 20, 30, 40, 50],
+    legend: ["apple", "banana", "cherry", "date", "elderberry"],
   },
 };
 
@@ -34,5 +36,6 @@ export const Shuffled: Story = {
   args: {
     type: "shuffled",
     data: [10, 20, 30, 40, 50],
+    legend: ["apple", "banana", "cherry", "date", "elderberry"],
   },
 };

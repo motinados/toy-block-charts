@@ -54,11 +54,13 @@ function alignToBottom(blocks: BlockItem[], svgHeight: number): BlockItem[] {
 type BalancedBlockChartProps = {
   type: "stable-balanced" | "unstable-inverted" | "shuffled";
   data: number[];
+  legend: string[];
 };
 
 export default function BalancedBlockChart({
   type,
   data,
+  legend,
 }: BalancedBlockChartProps) {
   const svgWidth = 400;
   const svgHeight = 300;
@@ -78,7 +80,6 @@ export default function BalancedBlockChart({
   let blocks = createBlocks(dimensionsList, svgCenterX);
   blocks = alignToBottom(blocks, svgHeight);
 
-  const legend: string[] = ["apple", "banana", "cherry", "date", "elderberry"];
   return (
     <>
       <div style={{ display: "flex", width: "100%" }}>
@@ -100,7 +101,7 @@ export default function BalancedBlockChart({
               height: "100%",
             }}
           >
-            {legend.map((legend, index) => (
+            {legend.map((str, index) => (
               <div key={index} style={{ display: "flex", fontSize: "12px" }}>
                 <div
                   style={{
@@ -109,7 +110,7 @@ export default function BalancedBlockChart({
                     backgroundColor: blocks[index].fill,
                   }}
                 ></div>
-                {legend}
+                {str}
               </div>
             ))}
           </div>
