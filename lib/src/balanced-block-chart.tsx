@@ -81,18 +81,27 @@ export default function BalancedBlockChart({ data }: BalancedBlockChartProps) {
           ))}
         </svg>
         <div style={{ width: "20%" }}>
-          {legend.map((legend, index) => (
-            <div key={index} style={{ display: "flex", fontSize: "12px" }}>
-              <div
-                style={{
-                  width: 12,
-                  height: 12,
-                  backgroundColor: blocks[index].fill,
-                }}
-              ></div>
-              {legend}
-            </div>
-          ))}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+              height: "100%",
+            }}
+          >
+            {legend.map((legend, index) => (
+              <div key={index} style={{ display: "flex", fontSize: "12px" }}>
+                <div
+                  style={{
+                    width: 12,
+                    height: 12,
+                    backgroundColor: blocks[index].fill,
+                  }}
+                ></div>
+                {legend}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
