@@ -79,12 +79,12 @@ export default function BalancedBlockChart({
   const svgWidth = 400;
   const svgHeight = 300;
 
-  const datumWithColor = data.map((d) => ({
+  const dataWithColor = data.map((d) => ({
     ...d,
     color: d.color || getRandomColor(),
   }));
 
-  const dataWithPercentage = calcPercentagesForData(datumWithColor);
+  const dataWithPercentage = calcPercentagesForData(dataWithColor);
   dataWithPercentage.sort((a, b) => a.percentage - b.percentage);
 
   let dataWithWidthHeight = calcWidthAndHeight(dataWithPercentage, 100);
