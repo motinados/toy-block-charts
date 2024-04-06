@@ -1,7 +1,6 @@
 import Block, { BlockItem } from "./block";
 import {
   calcWidthAndHeight,
-  // calcPercentages,
   calcPercentagesForData,
   getRandomColor,
   getRandomInt,
@@ -20,7 +19,6 @@ function dimensionsToBlock(dimensions: { width: number; height: number }) {
 
 function createBlocks(
   dimensionsList: DatumWithWidthHeight[],
-  // colors: string[],
   svgCenterX: number
 ): BlockItem[] {
   const blocks = [];
