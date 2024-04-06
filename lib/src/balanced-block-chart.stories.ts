@@ -19,32 +19,51 @@ type Story = StoryObj<typeof meta>;
 export const StableBalanced: Story = {
   args: {
     type: "stable-balanced",
-    data: [10, 20, 30, 40, 50],
-    legend: ["apple", "banana", "cherry", "date", "elderberry"],
+    data: [
+      { value: 10, name: "apple" },
+      { value: 20, name: "banana" },
+      { value: 30, name: "cherry" },
+      { value: 40, name: "date" },
+      { value: 50, name: "elderberry" },
+    ],
   },
 };
 
 export const UnstableInverted: Story = {
   args: {
     type: "unstable-inverted",
-    data: [10, 20, 30, 40, 50],
-    legend: ["apple", "banana", "cherry", "date", "elderberry"],
+    data: [
+      { value: 10, name: "apple" },
+      { value: 20, name: "banana" },
+      { value: 30, name: "cherry" },
+      { value: 40, name: "date" },
+      { value: 50, name: "elderberry" },
+    ],
   },
 };
 
 export const Shuffled: Story = {
   args: {
     type: "shuffled",
-    data: [10, 20, 30, 40, 50],
-    legend: ["apple", "banana", "cherry", "date", "elderberry"],
+    data: [
+      { value: 10, name: "apple" },
+      { value: 20, name: "banana" },
+      { value: 30, name: "cherry" },
+      { value: 40, name: "date" },
+      { value: 50, name: "elderberry" },
+    ],
   },
 };
 
 export const WithCustomColors: Story = {
   args: {
     type: "stable-balanced",
-    data: [10, 20, 30, 40, 50],
-    legend: ["apple", "banana", "cherry", "date", "elderberry"],
-    colors: ["#f00", "#0f0", "#00f", "#ff0", "#f0f"],
+    data: [
+      { value: 10, name: "apple", color: "#ff0000" },
+      { value: 20, name: "banana", color: "#00ff00" },
+      { value: 30, name: "cherry", color: "#0000ff" },
+      { value: 40, name: "date", color: "#ffff00" },
+      { value: 50, name: "elderberry", color: "#00ffff" },
+    ],
   },
 };

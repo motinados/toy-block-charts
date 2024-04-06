@@ -1,7 +1,8 @@
 import Block, { BlockItem } from "./block";
 import {
-  calcOrderdDimenstionsList,
-  calcPercentages,
+  calcWidthAndHeight,
+  // calcPercentages,
+  calcPercentagesForData,
   getRandomColor,
   getRandomInt,
   shuffleArray,
@@ -18,16 +19,15 @@ function dimensionsToBlock(dimensions: { width: number; height: number }) {
 }
 
 function createBlocks(
-  dimensionsList: { width: number; height: number }[],
-  colors: string[],
+  dimensionsList: DatumWithWidthHeight[],
+  // colors: string[],
   svgCenterX: number
 ): BlockItem[] {
   const blocks = [];
   let prevY = 0;
-  let i = 0;
   for (const dimensions of dimensionsList) {
     const block = dimensionsToBlock(dimensions);
-    block.fill = colors[i] || getRandomColor();
+    block.fill = dimensions.color || getRandomColor();
     block.y = prevY;
     prevY += block.height;
 
@@ -35,7 +35,6 @@ function createBlocks(
     const fluctuation = getRandomInt(-10, 10);
     block.x = svgCenterX - block.width / 2 + fluctuation;
     blocks.push(block);
-    i++;
   }
   return blocks;
 }
@@ -55,36 +54,51 @@ function alignToBottom(blocks: BlockItem[], svgHeight: number): BlockItem[] {
   return resultBlocks;
 }
 
+export type Datum = {
+  value: number;
+  name: string;
+  color?: string;
+};
+
+export type DatumWithColor = Required<Datum>;
+export type DatumWithPercentage = Datum & { percentage: number };
+export type DatumWithWidthHeight = DatumWithPercentage & {
+  width: number;
+  height: number;
+};
+
 type BalancedBlockChartProps = {
   type: "stable-balanced" | "unstable-inverted" | "shuffled";
-  data: number[];
-  legend: string[];
-  colors?: string[];
+  data: Datum[];
 };
 
 export default function BalancedBlockChart({
   type,
   data,
-  legend,
-  colors = [],
 }: BalancedBlockChartProps) {
   const svgWidth = 400;
   const svgHeight = 300;
-  const percentages = calcPercentages(data);
-  percentages.sort((a, b) => a - b);
-  let dimensionsList = calcOrderdDimenstionsList(
-    percentages.map((p) => p * 100)
-  );
+
+  const datumWithColor = data.map((d) => ({
+    ...d,
+    color: d.color || getRandomColor(),
+  }));
+
+  const dataWithPercentage = calcPercentagesForData(datumWithColor);
+  dataWithPercentage.sort((a, b) => a.percentage - b.percentage);
+
+  let dataWithWidthHeight = calcWidthAndHeight(dataWithPercentage, 100);
 
   if (type === "unstable-inverted") {
-    dimensionsList.reverse();
+    dataWithWidthHeight.reverse();
   } else if (type === "shuffled") {
-    dimensionsList = shuffleArray(dimensionsList);
+    dataWithWidthHeight = shuffleArray(dataWithWidthHeight);
   }
 
   const svgCenterX = svgWidth / 2 - 50;
-  let blocks = createBlocks(dimensionsList, colors, svgCenterX);
-  blocks = alignToBottom(blocks, svgHeight);
+  const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
+  const finalBlocks = alignToBottom(blocks, svgHeight);
+  const legend = dataWithWidthHeight.map((d) => d.name);
 
   return (
     <>
@@ -94,7 +108,7 @@ export default function BalancedBlockChart({
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
           style={{ width: "80%", maxWidth: "100%", height: "auto" }}
         >
-          {blocks.map((block, index) => (
+          {finalBlocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
         </svg>
@@ -113,7 +127,7 @@ export default function BalancedBlockChart({
                   style={{
                     width: 12,
                     height: 12,
-                    backgroundColor: blocks[index].fill,
+                    backgroundColor: finalBlocks[index].fill,
                   }}
                 ></div>
                 {str}
