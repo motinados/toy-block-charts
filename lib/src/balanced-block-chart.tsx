@@ -98,7 +98,7 @@ export default function BalancedBlockChart({
   const svgCenterX = svgWidth / 2;
   const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
   const finalBlocks = alignToBottom(blocks, svgHeight);
-  const legend = dataWithWidthHeight.map((d) => d.name);
+  const legendItems = dataWithWidthHeight.map((d) => d.name);
 
   return (
     <>
@@ -121,7 +121,7 @@ export default function BalancedBlockChart({
               height: "100%",
             }}
           >
-            {legend.map((str, index) => (
+            {legendItems.map((item, index) => (
               <div key={index} style={{ display: "flex", fontSize: "12px" }}>
                 <div
                   style={{
@@ -130,7 +130,7 @@ export default function BalancedBlockChart({
                     backgroundColor: finalBlocks[index].fill,
                   }}
                 ></div>
-                {str}
+                {item}
               </div>
             ))}
           </div>
