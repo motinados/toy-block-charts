@@ -4,6 +4,7 @@ import {
   calcPercentages,
   getRandomColor,
   getRandomInt,
+  shuffleArray,
 } from "./utils";
 
 function dimensionsToBlock(dimensions: { width: number; height: number }) {
@@ -51,17 +52,27 @@ function alignToBottom(blocks: BlockItem[], svgHeight: number): BlockItem[] {
 }
 
 type BalancedBlockChartProps = {
+  type: "stable-balanced" | "unstable-inverted" | "shuffled";
   data: number[];
 };
 
-export default function BalancedBlockChart({ data }: BalancedBlockChartProps) {
+export default function BalancedBlockChart({
+  type,
+  data,
+}: BalancedBlockChartProps) {
   const svgWidth = 400;
   const svgHeight = 300;
   const percentages = calcPercentages(data);
   percentages.sort((a, b) => a - b);
-  const dimensionsList = calcOrderdDimenstionsList(
+  let dimensionsList = calcOrderdDimenstionsList(
     percentages.map((p) => p * 100)
   );
+
+  if (type === "unstable-inverted") {
+    dimensionsList.reverse();
+  } else if (type === "shuffled") {
+    dimensionsList = shuffleArray(dimensionsList);
+  }
 
   const svgCenterX = svgWidth / 2 - 50;
   let blocks = createBlocks(dimensionsList, svgCenterX);
