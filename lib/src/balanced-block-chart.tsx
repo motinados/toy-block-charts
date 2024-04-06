@@ -95,7 +95,7 @@ export default function BalancedBlockChart({
     dataWithWidthHeight = shuffleArray(dataWithWidthHeight);
   }
 
-  const svgCenterX = svgWidth / 2 - 50;
+  const svgCenterX = svgWidth / 2;
   const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
   const finalBlocks = alignToBottom(blocks, svgHeight);
   const legend = dataWithWidthHeight.map((d) => d.name);
