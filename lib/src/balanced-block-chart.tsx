@@ -19,12 +19,15 @@ function dimensionsToBlock(dimensions: { width: number; height: number }) {
 
 function createBlocks(
   dimensionsList: { width: number; height: number }[],
+  colors: string[],
   svgCenterX: number
 ): BlockItem[] {
   const blocks = [];
   let prevY = 0;
+  let i = 0;
   for (const dimensions of dimensionsList) {
     const block = dimensionsToBlock(dimensions);
+    block.fill = colors[i] || getRandomColor();
     block.y = prevY;
     prevY += block.height;
 
@@ -32,6 +35,7 @@ function createBlocks(
     const fluctuation = getRandomInt(-10, 10);
     block.x = svgCenterX - block.width / 2 + fluctuation;
     blocks.push(block);
+    i++;
   }
   return blocks;
 }
@@ -55,12 +59,14 @@ type BalancedBlockChartProps = {
   type: "stable-balanced" | "unstable-inverted" | "shuffled";
   data: number[];
   legend: string[];
+  colors?: string[];
 };
 
 export default function BalancedBlockChart({
   type,
   data,
   legend,
+  colors = [],
 }: BalancedBlockChartProps) {
   const svgWidth = 400;
   const svgHeight = 300;
@@ -77,7 +83,7 @@ export default function BalancedBlockChart({
   }
 
   const svgCenterX = svgWidth / 2 - 50;
-  let blocks = createBlocks(dimensionsList, svgCenterX);
+  let blocks = createBlocks(dimensionsList, colors, svgCenterX);
   blocks = alignToBottom(blocks, svgHeight);
 
   return (
