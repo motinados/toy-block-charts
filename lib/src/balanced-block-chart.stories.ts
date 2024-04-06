@@ -16,8 +16,23 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const StableBalanced: Story = {
   args: {
+    type: "stable-balanced",
+    data: [10, 20, 30, 40, 50],
+  },
+};
+
+export const UnstableInverted: Story = {
+  args: {
+    type: "unstable-inverted",
+    data: [10, 20, 30, 40, 50],
+  },
+};
+
+export const Shuffled: Story = {
+  args: {
+    type: "shuffled",
     data: [10, 20, 30, 40, 50],
   },
 };

@@ -46,3 +46,15 @@ export function calcOrderdDimenstionsList(
 export function makeSampleData(size: number) {
   return Array.from({ length: size }, () => getRandomInt(1, 100));
 }
+
+// Receives an array and returns a shuffled array
+export function shuffleArray<T>(array: T[]): T[] {
+  const shffledArray = [...array];
+  for (let i = shffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = shffledArray[i];
+    shffledArray[i] = shffledArray[j];
+    shffledArray[j] = temp;
+  }
+  return shffledArray;
+}
