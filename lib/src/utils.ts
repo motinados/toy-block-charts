@@ -1,6 +1,21 @@
+import {
+  Datum,
+  DatumWithPercentage,
+  DatumWithWidthHeight,
+} from "./balanced-block-chart";
+
 export function calcPercentages(values: number[]) {
   const total = values.reduce((acc, value) => acc + value, 0);
   return values.map((value) => (value / total) * 100);
+}
+
+export function calcPercentagesForData(data: Datum[]): DatumWithPercentage[] {
+  const values = data.map((d) => d.value);
+  const percentages = calcPercentages(values);
+  return data.map((d, index) => ({
+    ...d,
+    percentage: percentages[index],
+  }));
 }
 
 export function getRandomInt(min: number, max: number) {
@@ -33,13 +48,16 @@ export function calcHeight(area: number, width: number) {
   return area / width;
 }
 
-export function calcOrderdDimenstionsList(
-  areas: number[]
-): { width: number; height: number }[] {
-  const widths = getOrderdRandomInt(10, 100, areas.length);
-  return areas.map((area, index) => ({
+export function calcWidthAndHeight(
+  data: DatumWithPercentage[],
+  multiple: number
+): DatumWithWidthHeight[] {
+  const widths = getOrderdRandomInt(10, 100, data.length);
+  return data.map((datum, index) => ({
     width: widths[index],
-    height: calcHeight(area, widths[index]),
+    height: calcHeight(datum.percentage * multiple, widths[index]),
+    area: datum.percentage,
+    ...datum,
   }));
 }
 
