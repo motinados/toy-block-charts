@@ -29,7 +29,6 @@ function createBlocks(
   let prevY = 0;
   for (const datum of data) {
     const block = datumToBlock(datum);
-    block.fill = datum.color;
     block.y = prevY;
     prevY += block.height;
 
