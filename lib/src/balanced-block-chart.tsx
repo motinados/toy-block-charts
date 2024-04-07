@@ -1,4 +1,5 @@
 import Block, { BlockItem } from "./block";
+import Legend from "./legend";
 import {
   calcWidthAndHeight,
   calcPercentagesForData,
@@ -59,7 +60,7 @@ export type Datum = {
 };
 
 export type DatumWithColor = Required<Datum>;
-export type DatumWithPercentage = Datum & { percentage: number };
+export type DatumWithPercentage = DatumWithColor & { percentage: number };
 export type DatumWithWidthHeight = DatumWithPercentage & {
   width: number;
   height: number;
@@ -93,46 +94,40 @@ export default function BalancedBlockChart({
     dataWithWidthHeight = shuffleArray(dataWithWidthHeight);
   }
 
-  const svgCenterX = svgWidth / 2;
+  const legendWidth = 100;
+  const legendItemHeight = 16;
+  const legendPaddingTop = 10;
+  const legendPaddingRight = 10;
+
+  const svgCenterX = (svgWidth - legendWidth) / 2;
   const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
   const finalBlocks = alignToBottom(blocks, svgHeight);
-  const legendItems = dataWithWidthHeight.map((d) => d.name);
+  const legendItems = dataWithWidthHeight.map((d) => {
+    return { name: d.name, color: d.color };
+  });
 
   return (
     <>
-      <div style={{ display: "flex", width: "100%" }}>
+      <div
+        style={{ display: "flex", width: "100%", border: "1px solid black" }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          style={{ width: "80%", maxWidth: "100%", height: "auto" }}
+          style={{ width: "100%", maxWidth: "100%", height: "auto" }}
         >
           {finalBlocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
+          <Legend
+            items={legendItems}
+            svgWidth={svgWidth}
+            width={legendWidth}
+            paddingRight={legendPaddingRight}
+            paddingTop={legendPaddingTop}
+            itemHeight={legendItemHeight}
+          />
         </svg>
-        <div style={{ width: "20%" }}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              height: "100%",
-            }}
-          >
-            {legendItems.map((item, index) => (
-              <div key={index} style={{ display: "flex", fontSize: "12px" }}>
-                <div
-                  style={{
-                    width: 12,
-                    height: 12,
-                    backgroundColor: finalBlocks[index].fill,
-                  }}
-                ></div>
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </>
   );

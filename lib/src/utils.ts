@@ -1,5 +1,5 @@
 import {
-  Datum,
+  DatumWithColor,
   DatumWithPercentage,
   DatumWithWidthHeight,
 } from "./balanced-block-chart";
@@ -9,7 +9,9 @@ export function calcPercentages(values: number[]) {
   return values.map((value) => (value / total) * 100);
 }
 
-export function calcPercentagesForData(data: Datum[]): DatumWithPercentage[] {
+export function calcPercentagesForData(
+  data: DatumWithColor[]
+): DatumWithPercentage[] {
   const values = data.map((d) => d.value);
   const percentages = calcPercentages(values);
   return data.map((d, index) => ({

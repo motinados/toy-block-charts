@@ -22,20 +22,20 @@ describe("utils", () => {
 
   it("calcPercentagesForData", () => {
     const data = [
-      { value: 10, name: "A" },
-      { value: 20, name: "B" },
-      { value: 30, name: "C" },
-      { value: 40, name: "D" },
-      { value: 50, name: "E" },
+      { value: 10, name: "A", color: "#000" },
+      { value: 20, name: "B", color: "#000" },
+      { value: 30, name: "C", color: "#000" },
+      { value: 40, name: "D", color: "#000" },
+      { value: 50, name: "E", color: "#000" },
     ];
     const result = calcPercentagesForData(data);
     expect(result).toHaveLength(data.length);
     expect(result).toEqual([
-      { value: 10, name: "A", percentage: (10 / 150) * 100 },
-      { value: 20, name: "B", percentage: (20 / 150) * 100 },
-      { value: 30, name: "C", percentage: (30 / 150) * 100 },
-      { value: 40, name: "D", percentage: (40 / 150) * 100 },
-      { value: 50, name: "E", percentage: (50 / 150) * 100 },
+      { value: 10, name: "A", percentage: (10 / 150) * 100, color: "#000" },
+      { value: 20, name: "B", percentage: (20 / 150) * 100, color: "#000" },
+      { value: 30, name: "C", percentage: (30 / 150) * 100, color: "#000" },
+      { value: 40, name: "D", percentage: (40 / 150) * 100, color: "#000" },
+      { value: 50, name: "E", percentage: (50 / 150) * 100, color: "#000" },
     ]);
   });
 
