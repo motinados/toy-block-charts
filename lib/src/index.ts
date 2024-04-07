@@ -1,2 +1,2 @@
-import BalancedBlockChart from "./balanced-block-chart";
-export default BalancedBlockChart;
+import StackedBlockChart from "./stacked-block-chart";
+export default StackedBlockChart;

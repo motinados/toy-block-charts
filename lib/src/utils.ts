@@ -2,7 +2,7 @@ import {
   DatumWithColor,
   DatumWithPercentage,
   DatumWithWidthHeight,
-} from "./balanced-block-chart";
+} from "./stacked-block-chart";
 
 export function calcPercentages(values: number[]) {
   const total = values.reduce((acc, value) => acc + value, 0);
