@@ -1,5 +1,5 @@
 import Block, { BlockItem } from "./block";
-import BlockLabel from "./block-labels";
+import BlockLabels from "./block-labels";
 import Legend from "./legend";
 import {
   calcWidthAndHeight,
@@ -121,7 +121,7 @@ export default function BalancedBlockChart({
           {finalBlocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
-          <BlockLabel blocks={finalBlocks} />
+          <BlockLabels blocks={finalBlocks} />
           <Legend
             items={legendItems}
             svgWidth={svgWidth}

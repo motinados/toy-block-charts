@@ -6,11 +6,11 @@ type BlockLabel = {
   text: string;
 };
 
-export type BlockLabelProps = {
+export type BlockLabelsProps = {
   blocks: BlockItem[];
 };
 
-export default function BlockLabel({ blocks }: BlockLabelProps) {
+export default function BlockLabels({ blocks }: BlockLabelsProps) {
   const blockLabels: BlockLabel[] = blocks.map((block) => {
     return {
       x: block.x + block.width + 20,
