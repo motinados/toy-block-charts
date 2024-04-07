@@ -67,3 +67,17 @@ export const WithCustomColors: Story = {
     ],
   },
 };
+
+export const WithoutDataLabels: Story = {
+  args: {
+    type: "stable-balanced",
+    data: [
+      { value: 10, name: "apple" },
+      { value: 20, name: "banana" },
+      { value: 30, name: "cherry" },
+      { value: 40, name: "date" },
+      { value: 50, name: "elderberry" },
+    ],
+    showDataLabels: false,
+  },
+};

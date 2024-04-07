@@ -71,11 +71,13 @@ export type DatumWithWidthHeight = DatumWithPercentage & {
 type BalancedBlockChartProps = {
   type: "stable-balanced" | "unstable-inverted" | "shuffled";
   data: Datum[];
+  showDataLabels?: boolean;
 };
 
 export default function BalancedBlockChart({
   type,
   data,
+  showDataLabels = true,
 }: BalancedBlockChartProps) {
   const svgWidth = 400;
   const svgHeight = 300;
@@ -121,7 +123,7 @@ export default function BalancedBlockChart({
           {finalBlocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
-          <BlockLabels blocks={finalBlocks} />
+          {showDataLabels && <BlockLabels blocks={finalBlocks} />}
           <Legend
             items={legendItems}
             svgWidth={svgWidth}
