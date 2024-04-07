@@ -1,4 +1,5 @@
 import Block, { BlockItem } from "./block";
+import BlockLabels from "./block-labels";
 import Legend from "./legend";
 import {
   calcWidthAndHeight,
@@ -8,13 +9,14 @@ import {
   shuffleArray,
 } from "./utils";
 
-function datumToBlock(datum: { width: number; height: number }) {
+function datumToBlock(datum: DatumWithWidthHeight) {
   return {
     x: 0,
     y: 0,
     width: datum.width,
     height: datum.height,
-    fill: getRandomColor(),
+    value: datum.value,
+    fill: datum.color,
   };
 }
 
@@ -26,7 +28,7 @@ function createBlocks(
   let prevY = 0;
   for (const datum of data) {
     const block = datumToBlock(datum);
-    block.fill = datum.color || getRandomColor();
+    block.fill = datum.color;
     block.y = prevY;
     prevY += block.height;
 
@@ -69,11 +71,13 @@ export type DatumWithWidthHeight = DatumWithPercentage & {
 type BalancedBlockChartProps = {
   type: "stable-balanced" | "unstable-inverted" | "shuffled";
   data: Datum[];
+  showDataLabels?: boolean;
 };
 
 export default function BalancedBlockChart({
   type,
   data,
+  showDataLabels = true,
 }: BalancedBlockChartProps) {
   const svgWidth = 400;
   const svgHeight = 300;
@@ -99,7 +103,7 @@ export default function BalancedBlockChart({
   const legendPaddingTop = 10;
   const legendPaddingRight = 10;
 
-  const svgCenterX = (svgWidth - legendWidth) / 2;
+  const svgCenterX = (svgWidth - legendWidth) / 2 - 40;
   const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
   const finalBlocks = alignToBottom(blocks, svgHeight);
   const legendItems = dataWithWidthHeight.map((d) => {
@@ -108,9 +112,7 @@ export default function BalancedBlockChart({
 
   return (
     <>
-      <div
-        style={{ display: "flex", width: "100%", border: "1px solid black" }}
-      >
+      <div style={{ display: "flex", width: "100%" }}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
@@ -119,6 +121,7 @@ export default function BalancedBlockChart({
           {finalBlocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
+          {showDataLabels && <BlockLabels blocks={finalBlocks} />}
           <Legend
             items={legendItems}
             svgWidth={svgWidth}
