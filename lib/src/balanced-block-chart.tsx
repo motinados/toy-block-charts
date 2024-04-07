@@ -112,9 +112,7 @@ export default function BalancedBlockChart({
 
   return (
     <>
-      <div
-        style={{ display: "flex", width: "100%", border: "1px solid black" }}
-      >
+      <div style={{ display: "flex", width: "100%" }}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
