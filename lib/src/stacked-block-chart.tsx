@@ -75,7 +75,7 @@ type BalancedBlockChartProps = {
   showDataLabels?: boolean;
 };
 
-export default function BalancedBlockChart({
+export default function StackedBlockChart({
   type,
   data,
   showDataLabels = true,

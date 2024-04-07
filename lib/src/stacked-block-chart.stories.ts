@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import BalancedBlockChart from "./balanced-block-chart";
+import StackedBlockChart from "./stacked-block-chart";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Example/Chart",
-  component: BalancedBlockChart,
+  title: "Example/StackedBlockChart",
+  component: StackedBlockChart,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
   argTypes: {},
   args: {},
-} satisfies Meta<typeof BalancedBlockChart>;
+} satisfies Meta<typeof StackedBlockChart>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
