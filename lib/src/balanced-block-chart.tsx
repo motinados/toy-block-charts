@@ -1,4 +1,5 @@
 import Block, { BlockItem } from "./block";
+import Legend from "./legend";
 import {
   calcWidthAndHeight,
   calcPercentagesForData,
@@ -97,7 +98,9 @@ export default function BalancedBlockChart({
   const svgCenterX = svgWidth / 2 - svgCenterAdjustment;
   const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
   const finalBlocks = alignToBottom(blocks, svgHeight);
-  const legendItems = dataWithWidthHeight.map((d) => d.name);
+  const legendItems = dataWithWidthHeight.map((d) => {
+    return { name: d.name, color: d.color };
+  });
   const legendWidth = 100;
   const legendItemHeight = 16;
   const legendPaddingTop = 10;
@@ -116,25 +119,14 @@ export default function BalancedBlockChart({
           {finalBlocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
-          <g
-            transform={`translate(${svgWidth - legendWidth - legendPaddingRight}, ${0 + legendPaddingTop})`}
-          >
-            {legendItems.map((name, index) => (
-              <g
-                key={index}
-                transform={`translate(0, ${index * legendItemHeight})`}
-              >
-                <rect
-                  width="10"
-                  height="10"
-                  fill={dataWithColor[index].color}
-                />
-                <text x="15" y="10" style={{ fontSize: "16px" }}>
-                  {name}
-                </text>
-              </g>
-            ))}
-          </g>
+          <Legend
+            legendItems={legendItems}
+            svgWidth={svgWidth}
+            legendWidth={legendWidth}
+            legendPaddingRight={legendPaddingRight}
+            legendPaddingTop={legendPaddingTop}
+            legendItemHeight={legendItemHeight}
+          />
         </svg>
       </div>
     </>
