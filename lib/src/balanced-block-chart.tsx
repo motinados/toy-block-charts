@@ -60,7 +60,7 @@ export type Datum = {
 };
 
 export type DatumWithColor = Required<Datum>;
-export type DatumWithPercentage = Datum & { percentage: number };
+export type DatumWithPercentage = DatumWithColor & { percentage: number };
 export type DatumWithWidthHeight = DatumWithPercentage & {
   width: number;
   height: number;
