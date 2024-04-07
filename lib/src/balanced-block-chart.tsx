@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Block, { BlockItem } from "./block";
 import BlockLabels from "./block-labels";
 import Legend from "./legend";
@@ -81,34 +82,37 @@ export default function BalancedBlockChart({
 }: BalancedBlockChartProps) {
   const svgWidth = 400;
   const svgHeight = 300;
-
-  const dataWithColor = data.map((d) => ({
-    ...d,
-    color: d.color || getRandomColor(),
-  }));
-
-  const dataWithPercentage = calcPercentagesForData(dataWithColor);
-  dataWithPercentage.sort((a, b) => a.percentage - b.percentage);
-
-  let dataWithWidthHeight = calcWidthAndHeight(dataWithPercentage, 100);
-
-  if (type === "unstable-inverted") {
-    dataWithWidthHeight.reverse();
-  } else if (type === "shuffled") {
-    dataWithWidthHeight = shuffleArray(dataWithWidthHeight);
-  }
-
   const legendWidth = 100;
   const legendItemHeight = 16;
   const legendPaddingTop = 10;
   const legendPaddingRight = 10;
 
-  const svgCenterX = (svgWidth - legendWidth) / 2 - 40;
-  const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
-  const finalBlocks = alignToBottom(blocks, svgHeight);
-  const legendItems = dataWithWidthHeight.map((d) => {
-    return { name: d.name, color: d.color };
-  });
+  const { finalBlocks, legendItems } = useMemo(() => {
+    const dataWithColor = data.map((d) => ({
+      ...d,
+      color: d.color || getRandomColor(),
+    }));
+
+    const dataWithPercentage = calcPercentagesForData(dataWithColor);
+    dataWithPercentage.sort((a, b) => a.percentage - b.percentage);
+
+    let dataWithWidthHeight = calcWidthAndHeight(dataWithPercentage, 100);
+
+    if (type === "unstable-inverted") {
+      dataWithWidthHeight.reverse();
+    } else if (type === "shuffled") {
+      dataWithWidthHeight = shuffleArray(dataWithWidthHeight);
+    }
+
+    const svgCenterX = (svgWidth - legendWidth) / 2 - 40;
+    const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
+    const finalBlocks = alignToBottom(blocks, svgHeight);
+    const legendItems = dataWithWidthHeight.map((d) => {
+      return { name: d.name, color: d.color };
+    });
+
+    return { finalBlocks, legendItems };
+  }, [type, data]);
 
   return (
     <>
