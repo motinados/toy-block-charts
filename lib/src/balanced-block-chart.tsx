@@ -1,4 +1,5 @@
 import Block, { BlockItem } from "./block";
+import BlockLabel from "./block-labels";
 import Legend from "./legend";
 import {
   calcWidthAndHeight,
@@ -14,6 +15,7 @@ function datumToBlock(datum: DatumWithWidthHeight) {
     y: 0,
     width: datum.width,
     height: datum.height,
+    value: datum.value,
     fill: datum.color,
   };
 }
@@ -119,20 +121,7 @@ export default function BalancedBlockChart({
           {finalBlocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
-          {/* block labels */}
-          {finalBlocks.map((block, index) => (
-            <text
-              key={index}
-              x={block.x + block.width + 20}
-              y={block.y + block.height / 2}
-              textAnchor="start"
-              alignmentBaseline="middle"
-              fill="black"
-              fontSize="12"
-            >
-              {block.height.toFixed(2)}
-            </text>
-          ))}
+          <BlockLabel blocks={finalBlocks} />
           <Legend
             items={legendItems}
             svgWidth={svgWidth}

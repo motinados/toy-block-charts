@@ -3,6 +3,7 @@ type Props = {
   y: number;
   width: number;
   height: number;
+  value: number;
   fill: string;
 };
 
