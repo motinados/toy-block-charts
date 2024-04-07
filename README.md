@@ -1,4 +1,4 @@
-# toy-block-charts
+# ToyBlockCharts
 
 ## Introduction
 
@@ -10,6 +10,10 @@ Please use it as an alternative if you find the expression of pie charts to be s
 > We recommend regularly checking the latest release logs and documentation.
 
 ## Usage
+
+### Stable Balanced
+
+![stable balanced chart](./assets/image-stable-balanced.jpg)
 
 ```tsx
 <StackedBlockChart
@@ -24,6 +28,10 @@ Please use it as an alternative if you find the expression of pie charts to be s
 />
 ```
 
+### Unstable Inverted
+
+![unstable inverted chart](./assets/image-unstable-inverted.jpg)
+
 ```tsx
 <StackedBlockChart
   type="unstable-inverted"
@@ -36,6 +44,10 @@ Please use it as an alternative if you find the expression of pie charts to be s
   ]}
 />
 ```
+
+### Shuffled
+
+![shuffled chart](./assets/image-shuffled.jpg)
 
 ```tsx
 <StackedBlockChart
