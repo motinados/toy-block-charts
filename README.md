@@ -2,7 +2,7 @@
 
 ## Introduction
 
-ToyBlockCharts is a chart library made up of toy blocks.  
+Charts that looks like they were made out of toy blocks.  
 Please use it as an alternative if you find the expression of pie charts to be stiff.
 
 > This library is currently in the early stages of development.
