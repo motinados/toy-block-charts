@@ -13,9 +13,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: lib
 
     steps:
       - name: Checkout
@@ -54,7 +51,7 @@ jobs:
       - name: Upload Documents
         uses: actions/upload-pages-artifact@v3
         with:
-          path: lib/storybook-static
+          path: storybook-static
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
