@@ -8,13 +8,13 @@ import {
   shuffleArray,
 } from "./utils";
 
-function datumToBlock(datum: { width: number; height: number }) {
+function datumToBlock(datum: DatumWithWidthHeight) {
   return {
     x: 0,
     y: 0,
     width: datum.width,
     height: datum.height,
-    fill: getRandomColor(),
+    fill: datum.color,
   };
 }
 
@@ -26,7 +26,7 @@ function createBlocks(
   let prevY = 0;
   for (const datum of data) {
     const block = datumToBlock(datum);
-    block.fill = datum.color || getRandomColor();
+    block.fill = datum.color;
     block.y = prevY;
     prevY += block.height;
 
