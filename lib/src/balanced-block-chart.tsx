@@ -93,46 +93,49 @@ export default function BalancedBlockChart({
     dataWithWidthHeight = shuffleArray(dataWithWidthHeight);
   }
 
-  const svgCenterX = svgWidth / 2;
+  const svgCenterAdjustment = 50;
+  const svgCenterX = svgWidth / 2 - svgCenterAdjustment;
   const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
   const finalBlocks = alignToBottom(blocks, svgHeight);
   const legendItems = dataWithWidthHeight.map((d) => d.name);
+  const legendWidth = 100;
+  const legendItemHeight = 16;
+  const legendPaddingTop = 10;
+  const legendPaddingRight = 10;
 
   return (
     <>
-      <div style={{ display: "flex", width: "100%" }}>
+      <div
+        style={{ display: "flex", width: "100%", border: "1px solid black" }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          style={{ width: "80%", maxWidth: "100%", height: "auto" }}
+          style={{ width: "100%", maxWidth: "100%", height: "auto" }}
         >
           {finalBlocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
-        </svg>
-        <div style={{ width: "20%" }}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              height: "100%",
-            }}
+          <g
+            transform={`translate(${svgWidth - legendWidth - legendPaddingRight}, ${0 + legendPaddingTop})`}
           >
-            {legendItems.map((item, index) => (
-              <div key={index} style={{ display: "flex", fontSize: "12px" }}>
-                <div
-                  style={{
-                    width: 12,
-                    height: 12,
-                    backgroundColor: finalBlocks[index].fill,
-                  }}
-                ></div>
-                {item}
-              </div>
+            {legendItems.map((name, index) => (
+              <g
+                key={index}
+                transform={`translate(0, ${index * legendItemHeight})`}
+              >
+                <rect
+                  width="10"
+                  height="10"
+                  fill={dataWithColor[index].color}
+                />
+                <text x="15" y="10" style={{ fontSize: "16px" }}>
+                  {name}
+                </text>
+              </g>
             ))}
-          </div>
-        </div>
+          </g>
+        </svg>
       </div>
     </>
   );
