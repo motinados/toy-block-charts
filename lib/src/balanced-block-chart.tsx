@@ -87,7 +87,7 @@ export default function BalancedBlockChart({
   const legendPaddingTop = 10;
   const legendPaddingRight = 10;
 
-  const { finalBlocks, legendItems } = useMemo(() => {
+  const { blocks, legendItems } = useMemo(() => {
     const dataWithColor = data.map((d) => ({
       ...d,
       color: d.color || getRandomColor(),
@@ -105,13 +105,13 @@ export default function BalancedBlockChart({
     }
 
     const svgCenterX = (svgWidth - legendWidth) / 2 - 40;
-    const blocks = createBlocks(dataWithWidthHeight, svgCenterX);
-    const finalBlocks = alignToBottom(blocks, svgHeight);
+    const rawBlocks = createBlocks(dataWithWidthHeight, svgCenterX);
+    const blocks = alignToBottom(rawBlocks, svgHeight);
     const legendItems = dataWithWidthHeight.map((d) => {
       return { name: d.name, color: d.color };
     });
 
-    return { finalBlocks, legendItems };
+    return { blocks, legendItems };
   }, [type, data]);
 
   return (
@@ -122,10 +122,10 @@ export default function BalancedBlockChart({
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
           style={{ width: "100%", maxWidth: "100%", height: "auto" }}
         >
-          {finalBlocks.map((block, index) => (
+          {blocks.map((block, index) => (
             <Block key={index} {...block} />
           ))}
-          {showDataLabels && <BlockLabels blocks={finalBlocks} />}
+          {showDataLabels && <BlockLabels blocks={blocks} />}
           <Legend
             items={legendItems}
             svgWidth={svgWidth}
