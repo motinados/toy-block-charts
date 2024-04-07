@@ -120,12 +120,12 @@ export default function BalancedBlockChart({
             <Block key={index} {...block} />
           ))}
           <Legend
-            legendItems={legendItems}
+            items={legendItems}
             svgWidth={svgWidth}
-            legendWidth={legendWidth}
-            legendPaddingRight={legendPaddingRight}
-            legendPaddingTop={legendPaddingTop}
-            legendItemHeight={legendItemHeight}
+            width={legendWidth}
+            paddingRight={legendPaddingRight}
+            paddingTop={legendPaddingTop}
+            itemHeight={legendItemHeight}
           />
         </svg>
       </div>

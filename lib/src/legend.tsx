@@ -1,26 +1,28 @@
 type LegendProps = {
-  legendItems: { name: string; color: string }[];
+  items: { name: string; color: string }[];
+  /** svgWidth is the width of the parent element. */
   svgWidth: number;
-  legendWidth: number;
-  legendPaddingRight: number;
-  legendPaddingTop: number;
-  legendItemHeight: number;
+  /** width is the width of the legend. */
+  width: number;
+  paddingRight: number;
+  paddingTop: number;
+  itemHeight: number;
 };
 
 export default function Legend({
-  legendItems,
+  items,
   svgWidth,
-  legendWidth,
-  legendPaddingRight,
-  legendPaddingTop,
-  legendItemHeight,
+  width,
+  paddingRight,
+  paddingTop,
+  itemHeight,
 }: LegendProps) {
   return (
     <g
-      transform={`translate(${svgWidth - legendWidth - legendPaddingRight}, ${0 + legendPaddingTop})`}
+      transform={`translate(${svgWidth - width - paddingRight}, ${0 + paddingTop})`}
     >
-      {legendItems.map((item, index) => (
-        <g key={index} transform={`translate(0, ${index * legendItemHeight})`}>
+      {items.map((item, index) => (
+        <g key={index} transform={`translate(0, ${index * itemHeight})`}>
           <rect width="10" height="10" fill={item.color} />
           <text x="15" y="10" style={{ fontSize: "16px" }}>
             {item.name}
