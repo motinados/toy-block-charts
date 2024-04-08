@@ -103,13 +103,6 @@ function calcBlocksPosition(
   return resultBlocks;
 }
 
-export type DatumWithColor = Required<Datum>;
-export type DatumWithPercentage = DatumWithColor & { percentage: number };
-export type DatumWithWidthHeight = DatumWithPercentage & {
-  width: number;
-  height: number;
-};
-
 type BalancedBlockChartProps = {
   type: "stable-balanced" | "unstable-inverted" | "shuffled";
   data: Datum[];
