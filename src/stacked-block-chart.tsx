@@ -123,27 +123,27 @@ export default function StackedBlockChart({
 
   const { blocks, legendItems } = useMemo(() => {
     const initialBlocks = data.map(createInitialBlockDatum);
-    const dataWithColor = initialBlocks.map(setRandomColorIfNotSet);
-    const total = dataWithColor.reduce((acc, d) => acc + d.value, 0);
-    const dataWithPercentage = dataWithColor.map((d) =>
+    const blocksWithColor = initialBlocks.map(setRandomColorIfNotSet);
+    const total = blocksWithColor.reduce((acc, d) => acc + d.value, 0);
+    const blocksWithPercentage = blocksWithColor.map((d) =>
       setPercentage(d, total)
     );
-    dataWithPercentage.sort((a, b) => a.percentage - b.percentage);
+    blocksWithPercentage.sort((a, b) => a.percentage - b.percentage);
 
-    let dataWithWidthHeight = setWidthsAndHeights(dataWithPercentage, 100);
+    let blocksWithWidthHeight = setWidthsAndHeights(blocksWithPercentage, 100);
     if (type === "unstable-inverted") {
-      dataWithWidthHeight.reverse();
+      blocksWithWidthHeight.reverse();
     } else if (type === "shuffled") {
-      dataWithWidthHeight = shuffleArray(dataWithWidthHeight);
+      blocksWithWidthHeight = shuffleArray(blocksWithWidthHeight);
     }
 
     const svgCenterX = (svgWidth - legendWidth) / 2 - 40;
-    const dataWithPosition = calcBlocksPosition(
-      dataWithWidthHeight,
+    const blocksWithPosition = calcBlocksPosition(
+      blocksWithWidthHeight,
       svgCenterX
     );
-    const blocks = alignToBottom(dataWithPosition, svgHeight);
-    const legendItems = dataWithWidthHeight.map((d) => {
+    const blocks = alignToBottom(blocksWithPosition, svgHeight);
+    const legendItems = blocksWithWidthHeight.map((d) => {
       return { name: d.name, color: d.fill };
     });
 
