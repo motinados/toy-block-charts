@@ -1,71 +1,21 @@
 import { useMemo } from "react";
-import Block, { BlockItem } from "./block";
+import Block from "./block";
 import BlockLabels from "./block-labels";
 import Legend from "./legend";
+import { shuffleArray } from "./utils";
 import {
-  calcWidthAndHeight,
-  calcPercentagesForData,
-  getRandomColor,
-  getRandomInt,
-  shuffleArray,
-} from "./utils";
-
-function datumToBlock(datum: DatumWithWidthHeight) {
-  return {
-    x: 0,
-    y: 0,
-    width: datum.width,
-    height: datum.height,
-    value: datum.value,
-    fill: datum.color,
-  };
-}
-
-function createBlocks(
-  data: DatumWithWidthHeight[],
-  svgCenterX: number
-): BlockItem[] {
-  const blocks = [];
-  let prevY = 0;
-  for (const datum of data) {
-    const block = datumToBlock(datum);
-    block.y = prevY;
-    prevY += block.height;
-
-    // Center the block
-    const fluctuation = getRandomInt(-10, 10);
-    block.x = svgCenterX - block.width / 2 + fluctuation;
-    blocks.push(block);
-  }
-  return blocks;
-}
-
-//Align BlockItem to the bottom of the svg based on svgHeight
-function alignToBottom(blocks: BlockItem[], svgHeight: number): BlockItem[] {
-  const resultBlocks: BlockItem[] = [];
-  const blocksHeight = blocks.reduce((acc, block) => acc + block.height, 0);
-  const diff = svgHeight - blocksHeight;
-
-  for (const block of blocks) {
-    const newBlock = { ...block };
-    newBlock.y += diff;
-    resultBlocks.push(newBlock);
-  }
-
-  return resultBlocks;
-}
+  alignToBottom,
+  calcBlocksPosition,
+  calcPercentage,
+  calcWidthsAndHeights,
+  createInitialBlockDatum,
+  ensureBlockHasColor,
+} from "./compute-blocks";
 
 export type Datum = {
   value: number;
   name: string;
   color?: string;
-};
-
-export type DatumWithColor = Required<Datum>;
-export type DatumWithPercentage = DatumWithColor & { percentage: number };
-export type DatumWithWidthHeight = DatumWithPercentage & {
-  width: number;
-  height: number;
 };
 
 type BalancedBlockChartProps = {
@@ -87,27 +37,29 @@ export default function StackedBlockChart({
   const legendPaddingRight = 10;
 
   const { blocks, legendItems } = useMemo(() => {
-    const dataWithColor = data.map((d) => ({
-      ...d,
-      color: d.color || getRandomColor(),
-    }));
+    const initialBlocks = data.map(createInitialBlockDatum);
+    const blocksWithColor = initialBlocks.map(ensureBlockHasColor);
+    const total = blocksWithColor.reduce((acc, d) => acc + d.value, 0);
+    const blocksWithPercentage = blocksWithColor.map((d) =>
+      calcPercentage(d, total)
+    );
+    blocksWithPercentage.sort((a, b) => a.percentage - b.percentage);
 
-    const dataWithPercentage = calcPercentagesForData(dataWithColor);
-    dataWithPercentage.sort((a, b) => a.percentage - b.percentage);
-
-    let dataWithWidthHeight = calcWidthAndHeight(dataWithPercentage, 100);
-
+    let blocksWithWidthHeight = calcWidthsAndHeights(blocksWithPercentage, 100);
     if (type === "unstable-inverted") {
-      dataWithWidthHeight.reverse();
+      blocksWithWidthHeight.reverse();
     } else if (type === "shuffled") {
-      dataWithWidthHeight = shuffleArray(dataWithWidthHeight);
+      blocksWithWidthHeight = shuffleArray(blocksWithWidthHeight);
     }
 
     const svgCenterX = (svgWidth - legendWidth) / 2 - 40;
-    const rawBlocks = createBlocks(dataWithWidthHeight, svgCenterX);
-    const blocks = alignToBottom(rawBlocks, svgHeight);
-    const legendItems = dataWithWidthHeight.map((d) => {
-      return { name: d.name, color: d.color };
+    const blocksWithPosition = calcBlocksPosition(
+      blocksWithWidthHeight,
+      svgCenterX
+    );
+    const blocks = alignToBottom(blocksWithPosition, svgHeight);
+    const legendItems = blocksWithWidthHeight.map((d) => {
+      return { name: d.name, color: d.fill };
     });
 
     return { blocks, legendItems };
