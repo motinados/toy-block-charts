@@ -31,6 +31,7 @@ export default function StackedBlockChart({
 }: BalancedBlockChartProps) {
   const svgWidth = 400;
   const svgHeight = 300;
+  const blocksOffsetX = 40;
   const legendWidth = 100;
   const legendItemHeight = 16;
   const legendPaddingTop = 10;
@@ -52,7 +53,7 @@ export default function StackedBlockChart({
       blocksWithWidthHeight = shuffleArray(blocksWithWidthHeight);
     }
 
-    const svgCenterX = (svgWidth - legendWidth) / 2 - 40;
+    const svgCenterX = (svgWidth - legendWidth) / 2 - blocksOffsetX;
     const blocksWithPosition = calcBlocksPosition(
       blocksWithWidthHeight,
       svgCenterX
