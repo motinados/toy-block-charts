@@ -56,8 +56,8 @@ function createInitialBlockDatum(datum: Datum): BlockDatum {
   };
 }
 
-/** If the color of BlockDatum is not set, set a random color */
-function setRandomColorIfNotSet(blockDatum: BlockDatum): BlockDatum {
+/** Ensure BlockDatum has color */
+function ensureBlockHasColor(blockDatum: BlockDatum): BlockDatum {
   if (!blockDatum.fill) {
     return { ...blockDatum, fill: getRandomColor() };
   }
@@ -65,12 +65,12 @@ function setRandomColorIfNotSet(blockDatum: BlockDatum): BlockDatum {
 }
 
 /** Calculate the percentage of BlockDatum */
-function setPercentage(blockDatum: BlockDatum, total: number): BlockDatum {
+function calcPercentage(blockDatum: BlockDatum, total: number): BlockDatum {
   return { ...blockDatum, percentage: (blockDatum.value / total) * 100 };
 }
 
 /** Calculate the width and height of BlockDatum */
-function setWidthsAndHeights(
+function calcWidthsAndHeights(
   data: BlockDatum[],
   multiple: number
 ): BlockDatum[] {
@@ -123,14 +123,14 @@ export default function StackedBlockChart({
 
   const { blocks, legendItems } = useMemo(() => {
     const initialBlocks = data.map(createInitialBlockDatum);
-    const blocksWithColor = initialBlocks.map(setRandomColorIfNotSet);
+    const blocksWithColor = initialBlocks.map(ensureBlockHasColor);
     const total = blocksWithColor.reduce((acc, d) => acc + d.value, 0);
     const blocksWithPercentage = blocksWithColor.map((d) =>
-      setPercentage(d, total)
+      calcPercentage(d, total)
     );
     blocksWithPercentage.sort((a, b) => a.percentage - b.percentage);
 
-    let blocksWithWidthHeight = setWidthsAndHeights(blocksWithPercentage, 100);
+    let blocksWithWidthHeight = calcWidthsAndHeights(blocksWithPercentage, 100);
     if (type === "unstable-inverted") {
       blocksWithWidthHeight.reverse();
     } else if (type === "shuffled") {
