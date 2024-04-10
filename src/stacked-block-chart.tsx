@@ -46,7 +46,9 @@ export default function StackedBlockChart({
     );
     blocksWithPercentage.sort((a, b) => a.percentage - b.percentage);
 
-    let blocksWithWidthHeight = calcWidthsAndHeights(blocksWithPercentage, 100);
+    let blocksWithWidthHeight = calcWidthsAndHeights(blocksWithPercentage, {
+      multiple: 100,
+    });
     if (type === "unstable-inverted") {
       blocksWithWidthHeight.reverse();
     } else if (type === "shuffled") {

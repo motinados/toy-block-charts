@@ -50,9 +50,10 @@ export function calcPercentage(
 /** Calculate the width and height of BlockDatum */
 export function calcWidthsAndHeights(
   data: BlockDatum[],
-  multiple: number
+  opt?: { multiple: number }
 ): BlockDatum[] {
   const widths = getOrderdRandomInt(10, 100, data.length);
+  const multiple = opt?.multiple || 1;
   return data.map((datum, index) => ({
     ...datum,
     width: widths[index],
