@@ -70,26 +70,23 @@ export default function StackedBlockChart({
 
   return (
     <>
-      <div style={{ display: "flex", width: "100%" }}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          style={{ width: "100%", maxWidth: "100%", height: "auto" }}
-        >
-          {blocks.map((block, index) => (
-            <Block key={index} {...block} />
-          ))}
-          {showDataLabels && <BlockLabels blocks={blocks} />}
-          <Legend
-            items={legendItems}
-            svgWidth={svgWidth}
-            width={legendWidth}
-            paddingRight={legendPaddingRight}
-            paddingTop={legendPaddingTop}
-            itemHeight={legendItemHeight}
-          />
-        </svg>
-      </div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+      >
+        {blocks.map((block, index) => (
+          <Block key={index} {...block} />
+        ))}
+        {showDataLabels && <BlockLabels blocks={blocks} />}
+        <Legend
+          items={legendItems}
+          svgWidth={svgWidth}
+          width={legendWidth}
+          paddingRight={legendPaddingRight}
+          paddingTop={legendPaddingTop}
+          itemHeight={legendItemHeight}
+        />
+      </svg>
     </>
   );
 }
