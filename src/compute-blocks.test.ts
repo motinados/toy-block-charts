@@ -5,6 +5,7 @@ import {
   createInitialBlockDatum,
   ensureBlockHasColor,
   calcXPositions,
+  alignToBottom,
 } from "./compute-blocks";
 
 describe("createInitialBlockDatum", () => {
@@ -233,6 +234,77 @@ describe("createInitialBlockDatum", () => {
         name: "C",
         x: 35,
         y: 0,
+        width: 30,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+    ]);
+  });
+
+  it("should align blocks to the bottom of the svg", () => {
+    const blocks: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 20,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 30,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+
+    const svgHeight = 100;
+    const result = alignToBottom(calcYPositions(blocks), svgHeight);
+
+    expect(result).toEqual([
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 40,
+        width: 10,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 50,
+        width: 20,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 70,
         width: 30,
         height: 30,
         fill: "#000",
