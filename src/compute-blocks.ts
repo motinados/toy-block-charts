@@ -77,6 +77,9 @@ export function calcBlocksPosition(
   return operations.reduce((acc, operation) => operation(acc), blocks);
 }
 
+/**
+ * Set Y to stack blocks
+ */
 export function calcYPositions(blocks: BlockDatum[]): BlockDatum[] {
   const resultBlocks: BlockDatum[] = [];
   let prevY = 0;
@@ -91,6 +94,9 @@ export function calcYPositions(blocks: BlockDatum[]): BlockDatum[] {
   return resultBlocks;
 }
 
+/**
+ * Set X so that svgCenterX is the center of each block
+ */
 export function calcXPositions(
   blocks: BlockDatum[],
   svgCenterX: number
@@ -106,6 +112,9 @@ export function calcXPositions(
   return resultBlocks;
 }
 
+/**
+ * Add a random value to the X coordinate of the block
+ */
 export function addXFluctuation(blocks: BlockDatum[]): BlockDatum[] {
   const resultBlocks: BlockDatum[] = [];
   for (const block of blocks) {
