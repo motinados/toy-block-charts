@@ -1,8 +1,10 @@
 import {
   BlockDatum,
+  calcYPositions,
   calcPercentage,
   createInitialBlockDatum,
   ensureBlockHasColor,
+  calcXPositions,
 } from "./compute-blocks";
 
 describe("createInitialBlockDatum", () => {
@@ -96,5 +98,146 @@ describe("createInitialBlockDatum", () => {
 
     const result = calcPercentage(blockDatum, total);
     expect(result.percentage).toBe(10);
+  });
+
+  it("should calculate the Y position of blocks correctly", () => {
+    const blocks: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+
+    const result = calcYPositions(blocks);
+
+    expect(result).toEqual([
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 10,
+        width: 0,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 30,
+        width: 0,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+    ]);
+  });
+
+  it("should calculate the X position of blocks correctly", () => {
+    const blocks: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 20,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 30,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+
+    const svgCenterX = 50;
+    const result = calcXPositions(blocks, svgCenterX);
+
+    expect(result).toEqual([
+      {
+        value: 10,
+        name: "A",
+        x: 45,
+        y: 0,
+        width: 10,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 40,
+        y: 0,
+        width: 20,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 35,
+        y: 0,
+        width: 30,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+    ]);
   });
 });
