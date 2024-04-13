@@ -5,7 +5,6 @@ import Legend from "./legend";
 import { shuffleArray } from "./utils";
 import {
   BlockDatum,
-  alignToBottom,
   calcBlocksPosition,
   calcPercentage,
   calcWidthsAndHeights,
@@ -61,11 +60,13 @@ const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
       }
 
       const svgCenterX = (svgWidth - legendWidth) / 2 - blocksOffsetX;
-      const blocksWithPosition = calcBlocksPosition(
+
+      const blocks = calcBlocksPosition(
         blocksWithWidthHeight,
-        svgCenterX
+        svgCenterX,
+        svgHeight
       );
-      const blocks = alignToBottom(blocksWithPosition, svgHeight);
+
       const legendItems = blocksWithWidthHeight.map((d) => {
         return { name: d.name, color: d.fill };
       });

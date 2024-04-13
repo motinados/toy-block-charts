@@ -64,12 +64,17 @@ export function calcWidthsAndHeights(
 /** Calculate x, y of BlockDatum */
 export function calcBlocksPosition(
   blocks: BlockDatum[],
-  svgCenterX: number
+  svgCenterX: number,
+  svgHeight: number
 ): BlockDatum[] {
-  const blocksWithY = calcYPositions(blocks);
-  const blocksWithXandY = calcXPositions(blocksWithY, svgCenterX);
-  const resultsBlocks = addXFluctuation(blocksWithXandY);
-  return resultsBlocks;
+  const operations = [
+    (blocks: BlockDatum[]) => calcYPositions(blocks),
+    (blocks: BlockDatum[]) => calcXPositions(blocks, svgCenterX),
+    (blocks: BlockDatum[]) => addXFluctuation(blocks),
+    (blocks: BlockDatum[]) => alignToBottom(blocks, svgHeight),
+  ];
+
+  return operations.reduce((acc, operation) => operation(acc), blocks);
 }
 
 export function calcYPositions(blocks: BlockDatum[]): BlockDatum[] {
