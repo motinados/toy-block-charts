@@ -1,9 +1,10 @@
-import { ComponentPropsWithRef, forwardRef, useMemo } from "react";
+import { ComponentPropsWithRef, forwardRef, useEffect, useState } from "react";
 import Block from "./block";
 import BlockLabels from "./block-labels";
 import Legend from "./legend";
 import { shuffleArray } from "./utils";
 import {
+  BlockDatum,
   alignToBottom,
   calcBlocksPosition,
   calcPercentage,
@@ -36,8 +37,12 @@ const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
     const legendItemHeight = 16;
     const legendPaddingTop = 10;
     const legendPaddingRight = 10;
+    const [blocks, setBlocks] = useState<BlockDatum[]>([]);
+    const [legendItems, setLegendItems] = useState<
+      { name: string; color: string }[]
+    >([]);
 
-    const { blocks, legendItems } = useMemo(() => {
+    useEffect(() => {
       const initialBlocks = data.map(createInitialBlockDatum);
       const blocksWithColor = initialBlocks.map(ensureBlockHasColor);
       const total = blocksWithColor.reduce((acc, d) => acc + d.value, 0);
@@ -65,7 +70,8 @@ const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
         return { name: d.name, color: d.fill };
       });
 
-      return { blocks, legendItems };
+      setBlocks(blocks);
+      setLegendItems(legendItems);
     }, [type, data]);
 
     return (
