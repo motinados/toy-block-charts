@@ -5,10 +5,12 @@ import Legend from "./legend";
 import { shuffleArray } from "./utils";
 import {
   BlockDatum,
+  addXFluctuation,
   alignToBottom,
-  calcBlocksPosition,
   calcPercentage,
   calcWidthsAndHeights,
+  calcXPositions,
+  calcYPositions,
   createInitialBlockDatum,
   ensureBlockHasColor,
 } from "./compute-blocks";
@@ -44,29 +46,30 @@ const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
 
     useEffect(() => {
       const initialBlocks = data.map(createInitialBlockDatum);
-      const blocksWithColor = initialBlocks.map(ensureBlockHasColor);
-      const total = blocksWithColor.reduce((acc, d) => acc + d.value, 0);
-      const blocksWithPercentage = blocksWithColor.map((d) =>
-        calcPercentage(d, total)
-      );
-      blocksWithPercentage.sort((a, b) => a.percentage - b.percentage);
-
-      let blocksWithWidthHeight = calcWidthsAndHeights(blocksWithPercentage, {
-        multiple: 100,
-      });
-      if (type === "unstable-inverted") {
-        blocksWithWidthHeight.reverse();
-      } else if (type === "shuffled") {
-        blocksWithWidthHeight = shuffleArray(blocksWithWidthHeight);
-      }
-
+      const total = initialBlocks.reduce((acc, d) => acc + d.value, 0);
       const svgCenterX = (svgWidth - legendWidth) / 2 - blocksOffsetX;
-      const blocksWithPosition = calcBlocksPosition(
-        blocksWithWidthHeight,
-        svgCenterX
-      );
-      const blocks = alignToBottom(blocksWithPosition, svgHeight);
-      const legendItems = blocksWithWidthHeight.map((d) => {
+
+      const ops: ((b: BlockDatum[]) => BlockDatum[])[] = [
+        (b) => b.map(ensureBlockHasColor),
+        (b) => b.map((datum) => calcPercentage(datum, total)),
+        (b) => b.sort((a, b) => a.percentage - b.percentage),
+        (b) => calcWidthsAndHeights(b, { multiple: 100 }),
+        (b) => {
+          if (type === "unstable-inverted") {
+            return b.reverse();
+          } else if (type === "shuffled") {
+            return shuffleArray(b);
+          }
+          return b;
+        },
+        (b) => calcYPositions(b),
+        (b) => calcXPositions(b, svgCenterX),
+        (b) => addXFluctuation(b),
+        (b) => alignToBottom(b, svgHeight),
+      ];
+
+      const blocks = ops.reduce((acc, op) => op(acc), initialBlocks);
+      const legendItems = blocks.map((d) => {
         return { name: d.name, color: d.fill };
       });
 

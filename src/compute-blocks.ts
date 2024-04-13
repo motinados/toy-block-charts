@@ -64,8 +64,23 @@ export function calcWidthsAndHeights(
 /** Calculate x, y of BlockDatum */
 export function calcBlocksPosition(
   blocks: BlockDatum[],
-  svgCenterX: number
+  svgCenterX: number,
+  svgHeight: number
 ): BlockDatum[] {
+  const operations = [
+    (blocks: BlockDatum[]) => calcYPositions(blocks),
+    (blocks: BlockDatum[]) => calcXPositions(blocks, svgCenterX),
+    (blocks: BlockDatum[]) => addXFluctuation(blocks),
+    (blocks: BlockDatum[]) => alignToBottom(blocks, svgHeight),
+  ];
+
+  return operations.reduce((acc, operation) => operation(acc), blocks);
+}
+
+/**
+ * Set Y to stack blocks
+ */
+export function calcYPositions(blocks: BlockDatum[]): BlockDatum[] {
   const resultBlocks: BlockDatum[] = [];
   let prevY = 0;
   for (const block of blocks) {
@@ -74,8 +89,39 @@ export function calcBlocksPosition(
     newBlock.y = prevY;
     prevY += block.height;
 
+    resultBlocks.push(newBlock);
+  }
+  return resultBlocks;
+}
+
+/**
+ * Set X so that svgCenterX is the center of each block
+ */
+export function calcXPositions(
+  blocks: BlockDatum[],
+  svgCenterX: number
+): BlockDatum[] {
+  const resultBlocks: BlockDatum[] = [];
+  for (const block of blocks) {
+    const newBlock = { ...block };
+
+    newBlock.x = svgCenterX - block.width / 2;
+
+    resultBlocks.push(newBlock);
+  }
+  return resultBlocks;
+}
+
+/**
+ * Add a random value to the X coordinate of the block
+ */
+export function addXFluctuation(blocks: BlockDatum[]): BlockDatum[] {
+  const resultBlocks: BlockDatum[] = [];
+  for (const block of blocks) {
+    const newBlock = { ...block };
+
     const fluctuation = getRandomInt(-10, 10);
-    newBlock.x = svgCenterX - block.width / 2 + fluctuation;
+    newBlock.x += fluctuation;
 
     resultBlocks.push(newBlock);
   }
