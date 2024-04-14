@@ -1,9 +1,10 @@
-import { Datum } from "./stacked-block-chart";
+import { Datum, StackType } from "./stacked-block-chart";
 import {
   calcHeight,
   getOrderdRandomInt,
   getRandomColor,
   getRandomInt,
+  shuffleArray,
 } from "./utils";
 
 export type BlockDatum = {
@@ -59,6 +60,18 @@ export function calcWidthsAndHeights(
     width: widths[index],
     height: calcHeight(datum.percentage * multiple, widths[index]),
   }));
+}
+
+export function modifyOrderByType(
+  type: StackType,
+  blocks: BlockDatum[]
+): BlockDatum[] {
+  if (type === "unstable-inverted") {
+    return blocks.reverse();
+  } else if (type === "shuffled") {
+    return shuffleArray(blocks);
+  }
+  return blocks;
 }
 
 /** Calculate x, y of BlockDatum */

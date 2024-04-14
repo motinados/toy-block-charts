@@ -2,7 +2,6 @@ import { ComponentPropsWithRef, forwardRef, useEffect, useState } from "react";
 import Block from "./block";
 import BlockLabels from "./block-labels";
 import Legend from "./legend";
-import { shuffleArray } from "./utils";
 import {
   BlockDatum,
   addXFluctuation,
@@ -13,7 +12,10 @@ import {
   calcYPositions,
   createInitialBlockDatum,
   ensureBlockHasColor,
+  modifyOrderByType,
 } from "./compute-blocks";
+
+export type StackType = "stable-balanced" | "unstable-inverted" | "shuffled";
 
 export type Datum = {
   value: number;
@@ -22,7 +24,7 @@ export type Datum = {
 };
 
 type BalancedBlockChartProps = ComponentPropsWithRef<"svg"> & {
-  type: "stable-balanced" | "unstable-inverted" | "shuffled";
+  type: StackType;
   data: Datum[];
   showDataLabels?: boolean;
 };
@@ -54,14 +56,7 @@ const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
         (b) => b.map((datum) => calcPercentage(datum, total)),
         (b) => b.sort((a, b) => a.percentage - b.percentage),
         (b) => calcWidthsAndHeights(b, { multiple: 100 }),
-        (b) => {
-          if (type === "unstable-inverted") {
-            return b.reverse();
-          } else if (type === "shuffled") {
-            return shuffleArray(b);
-          }
-          return b;
-        },
+        (b) => modifyOrderByType(type, b),
         (b) => calcYPositions(b),
         (b) => calcXPositions(b, svgCenterX),
         (b) => addXFluctuation(b),
