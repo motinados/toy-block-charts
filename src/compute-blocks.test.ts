@@ -6,6 +6,7 @@ import {
   ensureBlockHasColor,
   calcXPositions,
   alignToBottom,
+  modifyOrderByType,
 } from "./compute-blocks";
 
 describe("createInitialBlockDatum", () => {
@@ -311,5 +312,153 @@ describe("createInitialBlockDatum", () => {
         percentage: 0,
       },
     ]);
+  });
+
+  it("should return the blocks in reverse order if type is 'unstable-inverted'", () => {
+    const blocks: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+    ];
+
+    const result = modifyOrderByType("unstable-inverted", blocks);
+
+    expect(result).toEqual([
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+    ]);
+  });
+
+  it("should return the blocks in shuffled order if type is 'shuffled'", () => {
+    const blocks: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+    ];
+
+    const result = modifyOrderByType("shuffled", blocks);
+
+    expect(result).toEqual(expect.arrayContaining(blocks));
+  });
+
+  it("should return the blocks as is if type is not 'unstable-inverted' or 'shuffled'", () => {
+    const blocks: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+    ];
+
+    const result = modifyOrderByType("stable-balanced", blocks);
+
+    expect(result).toEqual(blocks);
   });
 });
