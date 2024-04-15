@@ -62,6 +62,52 @@ export function calcWidthsAndHeights(
   }));
 }
 
+/**
+ *  If the total height exceeds the maximum height, adjust the height.
+ *  If the height needs to be adjusted, expand the width of the last block and adjust the height.
+ *  Note: Adjust only the last block
+ */
+export function adjustTotalHeight(
+  data: BlockDatum[],
+  maxHeight: number
+): BlockDatum[] {
+  const totalHeight = data.reduce((acc, d) => acc + d.height, 0);
+  if (totalHeight <= maxHeight) {
+    return data;
+  }
+
+  const diff = totalHeight - maxHeight;
+  const lastBlock = data[data.length - 1];
+  const newHeight = lastBlock.height - diff;
+  const newWidth = calcAdjustedWidthKeepingArea(
+    lastBlock.width,
+    lastBlock.height,
+    newHeight
+  );
+
+  const results = [...data];
+  results[results.length - 1] = {
+    ...lastBlock,
+    width: newWidth,
+    height: newHeight,
+  };
+
+  return results;
+}
+
+/**
+ * Calculate the width to change the height while keeping the area
+ */
+function calcAdjustedWidthKeepingArea(
+  currentWidth: number,
+  currentHeight: number,
+  targetHeight: number
+) {
+  const area = currentWidth * currentHeight;
+  const newWidth = area / targetHeight;
+  return newWidth;
+}
+
 export function modifyOrderByType(
   type: StackType,
   blocks: BlockDatum[]

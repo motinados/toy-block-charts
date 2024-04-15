@@ -7,6 +7,7 @@ import {
   calcXPositions,
   alignToBottom,
   modifyOrderByType,
+  adjustTotalHeight,
 } from "./compute-blocks";
 
 describe("createInitialBlockDatum", () => {
@@ -460,5 +461,117 @@ describe("createInitialBlockDatum", () => {
     const result = modifyOrderByType("stable-balanced", blocks);
 
     expect(result).toEqual(blocks);
+  });
+
+  it("should return the original data if total height is less than or equal to maxHeight", () => {
+    const data: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 20,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 30,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+    const maxHeight = 100;
+
+    const result = adjustTotalHeight(data, maxHeight);
+
+    expect(result).toEqual(data);
+  });
+
+  it("should adjust the height of the last block to fit within maxHeight", () => {
+    const data: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 50,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 20,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 30,
+        height: 40,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+    const maxHeight = 100;
+
+    const result = adjustTotalHeight(data, maxHeight);
+    console.log(result);
+
+    expect(result).toEqual([
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 50,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 20,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 60,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+    ]);
   });
 });
