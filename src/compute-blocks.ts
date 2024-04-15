@@ -65,6 +65,7 @@ export function calcWidthsAndHeights(
 /**
  *  If the total height exceeds the maximum height, adjust the height.
  *  If the height needs to be adjusted, expand the width of the last block and adjust the height.
+ *  Note: Adjust only the last block
  */
 export function adjustTotalHeight(
   data: BlockDatum[],
