@@ -18,7 +18,7 @@ import {
 
 export type StackType = "stable-balanced" | "unstable-inverted" | "shuffled";
 
-export type Datum = {
+export type StackedBlockDatum = {
   value: number;
   name: string;
   color?: string;
@@ -26,7 +26,7 @@ export type Datum = {
 
 type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   type: StackType;
-  data: Datum[];
+  data: StackedBlockDatum[];
   showDataLabels?: boolean;
 };
 

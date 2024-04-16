@@ -1,4 +1,4 @@
-import { Datum, StackType } from "./stacked-block-chart";
+import { StackedBlockDatum, StackType } from "./stacked-block-chart";
 import {
   calcHeight,
   getOrderdRandomInt,
@@ -19,7 +19,7 @@ export type BlockDatum = {
 };
 
 /** Create initial BlockDatum */
-export function createInitialBlockDatum(datum: Datum): BlockDatum {
+export function createInitialBlockDatum(datum: StackedBlockDatum): BlockDatum {
   return {
     value: datum.value,
     name: datum.name,
