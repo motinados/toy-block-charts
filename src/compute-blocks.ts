@@ -109,8 +109,8 @@ function calcAdjustedWidthKeepingArea(
 }
 
 export function modifyOrderByType(
-  type: StackType,
-  blocks: BlockDatum[]
+  blocks: BlockDatum[],
+  type: StackType
 ): BlockDatum[] {
   if (type === "unstable-inverted") {
     return blocks.reverse();

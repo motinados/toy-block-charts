@@ -349,7 +349,7 @@ describe("createInitialBlockDatum", () => {
       },
     ];
 
-    const result = modifyOrderByType("unstable-inverted", blocks);
+    const result = modifyOrderByType(blocks, "unstable-inverted");
 
     expect(result).toEqual([
       {
@@ -419,7 +419,7 @@ describe("createInitialBlockDatum", () => {
       },
     ];
 
-    const result = modifyOrderByType("shuffled", blocks);
+    const result = modifyOrderByType(blocks, "shuffled");
 
     expect(result).toEqual(expect.arrayContaining(blocks));
   });
@@ -458,7 +458,7 @@ describe("createInitialBlockDatum", () => {
       },
     ];
 
-    const result = modifyOrderByType("stable-balanced", blocks);
+    const result = modifyOrderByType(blocks, "stable-balanced");
 
     expect(result).toEqual(blocks);
   });

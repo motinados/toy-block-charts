@@ -61,7 +61,7 @@ export const StackedBlockChart = forwardRef<
         (b) => b.sort((a, b) => a.percentage - b.percentage),
         (b) => calcWidthsAndHeights(b, { multiple: 100 }),
         (b) => adjustTotalHeight(b, svgHeight),
-        (b) => modifyOrderByType(stackType, b),
+        (b) => modifyOrderByType(b, stackType),
         (b) => calcYPositions(b),
         (b) => calcXPositions(b, svgCenterX),
         (b) => addXFluctuation(b),
