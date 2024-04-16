@@ -1,2 +1,1 @@
-import StackedBlockChart from "./stacked-block-chart";
-export default StackedBlockChart;
+export * from "./stacked-block-chart";

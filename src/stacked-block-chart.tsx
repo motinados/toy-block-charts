@@ -30,7 +30,10 @@ type BalancedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   showDataLabels?: boolean;
 };
 
-const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
+export const StackedBlockChart = forwardRef<
+  SVGSVGElement,
+  BalancedBlockChartProps
+>(
   (
     { type, data, showDataLabels = true, ...rest }: BalancedBlockChartProps,
     ref
@@ -100,5 +103,3 @@ const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
     );
   }
 );
-
-export default StackedBlockChart;
