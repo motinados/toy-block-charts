@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import StackedBlockChart from "./stacked-block-chart";
+import { StackedBlockChart } from "./stacked-block-chart";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 
 export const StableBalanced: Story = {
   args: {
-    type: "stable-balanced",
+    stackType: "stable-balanced",
     data: [
       { value: 10, name: "apple" },
       { value: 20, name: "banana" },
@@ -31,7 +31,7 @@ export const StableBalanced: Story = {
 
 export const UnstableInverted: Story = {
   args: {
-    type: "unstable-inverted",
+    stackType: "unstable-inverted",
     data: [
       { value: 10, name: "apple" },
       { value: 20, name: "banana" },
@@ -44,7 +44,7 @@ export const UnstableInverted: Story = {
 
 export const Shuffled: Story = {
   args: {
-    type: "shuffled",
+    stackType: "shuffled",
     data: [
       { value: 10, name: "apple" },
       { value: 20, name: "banana" },
@@ -57,7 +57,7 @@ export const Shuffled: Story = {
 
 export const WithCustomColors: Story = {
   args: {
-    type: "stable-balanced",
+    stackType: "stable-balanced",
     data: [
       { value: 10, name: "apple", color: "#ff0000" },
       { value: 20, name: "banana", color: "#00ff00" },
@@ -70,7 +70,7 @@ export const WithCustomColors: Story = {
 
 export const WithoutDataLabels: Story = {
   args: {
-    type: "stable-balanced",
+    stackType: "stable-balanced",
     data: [
       { value: 10, name: "apple" },
       { value: 20, name: "banana" },

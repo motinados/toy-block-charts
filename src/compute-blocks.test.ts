@@ -539,7 +539,6 @@ describe("createInitialBlockDatum", () => {
     const maxHeight = 100;
 
     const result = adjustTotalHeight(data, maxHeight);
-    console.log(result);
 
     expect(result).toEqual([
       {

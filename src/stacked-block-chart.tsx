@@ -18,21 +18,24 @@ import {
 
 export type StackType = "stable-balanced" | "unstable-inverted" | "shuffled";
 
-export type Datum = {
+export type StackedBlockDatum = {
   value: number;
   name: string;
   color?: string;
 };
 
-type BalancedBlockChartProps = ComponentPropsWithRef<"svg"> & {
-  type: StackType;
-  data: Datum[];
+type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
+  stackType: StackType;
+  data: StackedBlockDatum[];
   showDataLabels?: boolean;
 };
 
-const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
+export const StackedBlockChart = forwardRef<
+  SVGSVGElement,
+  StackedBlockChartProps
+>(
   (
-    { type, data, showDataLabels = true, ...rest }: BalancedBlockChartProps,
+    { stackType, data, showDataLabels = true, ...rest }: StackedBlockChartProps,
     ref
   ) => {
     const svgWidth = 400;
@@ -58,7 +61,7 @@ const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
         (b) => b.sort((a, b) => a.percentage - b.percentage),
         (b) => calcWidthsAndHeights(b, { multiple: 100 }),
         (b) => adjustTotalHeight(b, svgHeight),
-        (b) => modifyOrderByType(type, b),
+        (b) => modifyOrderByType(stackType, b),
         (b) => calcYPositions(b),
         (b) => calcXPositions(b, svgCenterX),
         (b) => addXFluctuation(b),
@@ -72,7 +75,7 @@ const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
 
       setBlocks(blocks);
       setLegendItems(legendItems);
-    }, [type, data]);
+    }, [stackType, data]);
 
     return (
       <>
@@ -100,5 +103,3 @@ const StackedBlockChart = forwardRef<SVGSVGElement, BalancedBlockChartProps>(
     );
   }
 );
-
-export default StackedBlockChart;
