@@ -25,7 +25,7 @@ export type StackedBlockDatum = {
 };
 
 type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
-  type: StackType;
+  stackType: StackType;
   data: StackedBlockDatum[];
   showDataLabels?: boolean;
 };
@@ -35,7 +35,7 @@ export const StackedBlockChart = forwardRef<
   StackedBlockChartProps
 >(
   (
-    { type, data, showDataLabels = true, ...rest }: StackedBlockChartProps,
+    { stackType, data, showDataLabels = true, ...rest }: StackedBlockChartProps,
     ref
   ) => {
     const svgWidth = 400;
@@ -61,7 +61,7 @@ export const StackedBlockChart = forwardRef<
         (b) => b.sort((a, b) => a.percentage - b.percentage),
         (b) => calcWidthsAndHeights(b, { multiple: 100 }),
         (b) => adjustTotalHeight(b, svgHeight),
-        (b) => modifyOrderByType(type, b),
+        (b) => modifyOrderByType(stackType, b),
         (b) => calcYPositions(b),
         (b) => calcXPositions(b, svgCenterX),
         (b) => addXFluctuation(b),
@@ -75,7 +75,7 @@ export const StackedBlockChart = forwardRef<
 
       setBlocks(blocks);
       setLegendItems(legendItems);
-    }, [type, data]);
+    }, [stackType, data]);
 
     return (
       <>
