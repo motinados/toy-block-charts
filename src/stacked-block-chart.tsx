@@ -24,7 +24,7 @@ export type Datum = {
   color?: string;
 };
 
-type BalancedBlockChartProps = ComponentPropsWithRef<"svg"> & {
+type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   type: StackType;
   data: Datum[];
   showDataLabels?: boolean;
@@ -32,10 +32,10 @@ type BalancedBlockChartProps = ComponentPropsWithRef<"svg"> & {
 
 export const StackedBlockChart = forwardRef<
   SVGSVGElement,
-  BalancedBlockChartProps
+  StackedBlockChartProps
 >(
   (
-    { type, data, showDataLabels = true, ...rest }: BalancedBlockChartProps,
+    { type, data, showDataLabels = true, ...rest }: StackedBlockChartProps,
     ref
   ) => {
     const svgWidth = 400;
