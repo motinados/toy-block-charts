@@ -17,7 +17,7 @@ Please use it as an alternative if you find the expression of pie charts to be s
 
 ```tsx
 <StackedBlockChart
-  type="stable-balanced"
+  stackType="stable-balanced"
   data={[
     { name: "apple", value: 10 },
     { name: "banana", value: 20 },
@@ -34,7 +34,7 @@ Please use it as an alternative if you find the expression of pie charts to be s
 
 ```tsx
 <StackedBlockChart
-  type="unstable-inverted"
+  stackType="unstable-inverted"
   data={[
     { name: "apple", value: 10 },
     { name: "banana", value: 20 },
@@ -51,7 +51,7 @@ Please use it as an alternative if you find the expression of pie charts to be s
 
 ```tsx
 <StackedBlockChart
-  type="shuffled"
+  stackType="shuffled"
   data={[
     { name: "apple", value: 10 },
     { name: "banana", value: 20 },
