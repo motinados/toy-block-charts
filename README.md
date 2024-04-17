@@ -9,6 +9,12 @@ Please use it as an alternative if you find the expression of pie charts to be s
 > We are constantly working to improve and optimize our codebase, which may lead to some breaking changes.
 > We recommend regularly checking the latest release logs and documentation.
 
+## Installation
+
+```
+npm install toy-block-charts
+```
+
 ## Usage
 
 ### Stable Balanced
