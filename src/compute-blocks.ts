@@ -120,22 +120,6 @@ export function modifyOrderByType(
   return blocks;
 }
 
-/** Calculate x, y of BlockDatum */
-export function calcBlocksPosition(
-  blocks: BlockDatum[],
-  svgCenterX: number,
-  svgHeight: number
-): BlockDatum[] {
-  const operations = [
-    (blocks: BlockDatum[]) => calcYPositions(blocks),
-    (blocks: BlockDatum[]) => calcXPositions(blocks, svgCenterX),
-    (blocks: BlockDatum[]) => addXFluctuation(blocks),
-    (blocks: BlockDatum[]) => alignToBottom(blocks, svgHeight),
-  ];
-
-  return operations.reduce((acc, operation) => operation(acc), blocks);
-}
-
 /**
  * Set Y to stack blocks
  */
