@@ -63,6 +63,42 @@ export function calcWidthsAndHeights(
 }
 
 /**
+ * If there are blocks with the same value, make all blocks the same height and width.
+ * The block to refer to at that time is the block with the lowest height.
+ */
+export function adjustSameValueBlocks(data: BlockDatum[]): BlockDatum[] {
+  const valueMap = data.reduce(
+    (acc, d) => {
+      if (!acc[d.value]) {
+        acc[d.value] = [];
+      }
+      acc[d.value].push(d);
+      return acc;
+    },
+    {} as { [key: number]: BlockDatum[] }
+  );
+
+  const results = data.map((d) => {
+    const blocks = valueMap[d.value];
+    if (blocks.length === 1) {
+      return d;
+    }
+
+    const minHeightBlock = blocks.reduce((acc, b) =>
+      acc.height < b.height ? acc : b
+    );
+
+    return {
+      ...d,
+      width: minHeightBlock.width,
+      height: minHeightBlock.height,
+    };
+  });
+
+  return results;
+}
+
+/**
  *  If the total height exceeds the maximum height, adjust the height.
  *  If the height needs to be adjusted, expand the width of the last block and adjust the height.
  *  Note: Adjust only the last block
