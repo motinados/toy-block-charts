@@ -81,3 +81,16 @@ export const WithoutDataLabels: Story = {
     showDataLabels: false,
   },
 };
+
+export const SameValue: Story = {
+  args: {
+    stackType: "stable-balanced",
+    data: [
+      { value: 10, name: "apple" },
+      { value: 10, name: "banana" },
+      { value: 10, name: "cherry" },
+      { value: 10, name: "date" },
+      { value: 10, name: "elderberry" },
+    ],
+  },
+};

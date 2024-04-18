@@ -5,6 +5,7 @@ import Legend from "./legend";
 import {
   BlockDatum,
   addXFluctuation,
+  adjustSameValueBlocks,
   adjustTotalHeight,
   alignToBottom,
   calcPercentage,
@@ -60,6 +61,7 @@ export const StackedBlockChart = forwardRef<
         (b) => b.map((datum) => calcPercentage(datum, total)),
         (b) => b.sort((a, b) => a.percentage - b.percentage),
         (b) => calcWidthsAndHeights(b, { multiple: 100 }),
+        (b) => adjustSameValueBlocks(b),
         (b) => adjustTotalHeight(b, svgHeight),
         (b) => modifyOrderByType(b, stackType),
         (b) => calcYPositions(b),

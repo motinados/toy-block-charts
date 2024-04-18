@@ -8,6 +8,7 @@ import {
   alignToBottom,
   modifyOrderByType,
   adjustTotalHeight,
+  adjustSameValueBlocks,
 } from "./compute-blocks";
 
 describe("createInitialBlockDatum", () => {
@@ -568,6 +569,116 @@ describe("createInitialBlockDatum", () => {
         y: 0,
         width: 60,
         height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+    ]);
+  });
+});
+describe("adjustSameValueBlocks", () => {
+  it("should return the same data if there are no blocks with the same value", () => {
+    const data: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 20,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 30,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+
+    const result = adjustSameValueBlocks(data);
+
+    expect(result).toEqual(data);
+  });
+
+  it("should adjust the width and height of blocks with the same value to match the block with lowest height", () => {
+    const data: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 10,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 20,
+        height: 20,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 10,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 30,
+        height: 30,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+
+    const result = adjustSameValueBlocks(data);
+
+    expect(result).toEqual([
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 10,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 10,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 10,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 10,
         fill: "#000",
         percentage: 0,
       },
