@@ -19,12 +19,34 @@ export function calcHeight(area: number, width: number) {
 
 // Receives an array and returns a shuffled array
 export function shuffleArray<T>(array: T[]): T[] {
-  const shffledArray = [...array];
-  for (let i = shffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = shffledArray[i];
-    shffledArray[i] = shffledArray[j];
-    shffledArray[j] = temp;
+  if (array.length <= 1) {
+    return array;
   }
+
+  const allEqual = array.every((e) => e === array[0]);
+  if (allEqual) {
+    return array;
+  }
+
+  let shffledArray = [];
+  let attempts = 0;
+  const maxAttempts = 100;
+
+  do {
+    shffledArray = [...array];
+
+    for (let i = shffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = shffledArray[i];
+      shffledArray[i] = shffledArray[j];
+      shffledArray[j] = temp;
+    }
+
+    attempts++;
+  } while (
+    shffledArray.every((e, i) => e === array[i]) &&
+    attempts < maxAttempts
+  );
+
   return shffledArray;
 }
