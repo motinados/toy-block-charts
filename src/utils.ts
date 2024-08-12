@@ -7,8 +7,13 @@ export function getRandomColor() {
 }
 
 // Generate multiple random numbers and return an array of them sorted in ascending order
-export function getOrderdRandomInt(min: number, max: number, size: number) {
-  const numbers = Array.from({ length: size }, () => getRandomInt(min, max));
+export function getOrderdRandomInt(
+  min: number,
+  max: number,
+  size: number,
+  rndFn: (min: number, max: number) => number
+) {
+  const numbers = Array.from({ length: size }, () => rndFn(min, max));
   return numbers.sort((a, b) => a - b);
 }
 
@@ -18,7 +23,10 @@ export function calcHeight(area: number, width: number) {
 }
 
 // Receives an array and returns a shuffled array
-export function shuffleArray<T>(array: T[]): T[] {
+export function shuffleArray<T>(
+  array: T[],
+  rndFn: (min: number, max: number) => number
+): T[] {
   if (array.length <= 1) {
     return array;
   }
@@ -36,7 +44,7 @@ export function shuffleArray<T>(array: T[]): T[] {
     shffledArray = [...array];
 
     for (let i = shffledArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = rndFn(0, i + 1);
       const temp = shffledArray[i];
       shffledArray[i] = shffledArray[j];
       shffledArray[j] = temp;
