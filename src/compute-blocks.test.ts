@@ -10,6 +10,7 @@ import {
   adjustTotalHeight,
   adjustSameValueBlocks,
 } from "./compute-blocks";
+import { getRandomInt } from "./utils";
 
 describe("createInitialBlockDatum", () => {
   it("should create an initial block datum with default values", () => {
@@ -350,7 +351,7 @@ describe("createInitialBlockDatum", () => {
       },
     ];
 
-    const result = modifyOrderByType(blocks, "unstable-inverted");
+    const result = modifyOrderByType(blocks, "unstable-inverted", getRandomInt);
 
     expect(result).toEqual([
       {
@@ -420,7 +421,7 @@ describe("createInitialBlockDatum", () => {
       },
     ];
 
-    const result = modifyOrderByType(blocks, "shuffled");
+    const result = modifyOrderByType(blocks, "shuffled", getRandomInt);
 
     expect(result).toEqual(expect.arrayContaining(blocks));
   });
@@ -459,7 +460,7 @@ describe("createInitialBlockDatum", () => {
       },
     ];
 
-    const result = modifyOrderByType(blocks, "stable-balanced");
+    const result = modifyOrderByType(blocks, "stable-balanced", getRandomInt);
 
     expect(result).toEqual(blocks);
   });

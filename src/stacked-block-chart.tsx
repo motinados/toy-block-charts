@@ -16,6 +16,7 @@ import {
   ensureBlockHasColor,
   modifyOrderByType,
 } from "./compute-blocks";
+import { useRandomGenerator } from "./use-random-generator";
 
 export type StackType = "stable-balanced" | "unstable-inverted" | "shuffled";
 
@@ -50,6 +51,7 @@ export const StackedBlockChart = forwardRef<
     const [legendItems, setLegendItems] = useState<
       { name: string; color: string }[]
     >([]);
+    const { getRandomInt } = useRandomGenerator(42);
 
     useEffect(() => {
       const initialBlocks = data.map(createInitialBlockDatum);
@@ -60,13 +62,13 @@ export const StackedBlockChart = forwardRef<
         (b) => b.map(ensureBlockHasColor),
         (b) => b.map((datum) => calcPercentage(datum, total)),
         (b) => b.sort((a, b) => a.percentage - b.percentage),
-        (b) => calcWidthsAndHeights(b, { multiple: 100 }),
+        (b) => calcWidthsAndHeights(b, getRandomInt, { multiple: 100 }),
         (b) => adjustSameValueBlocks(b),
         (b) => adjustTotalHeight(b, svgHeight),
-        (b) => modifyOrderByType(b, stackType),
+        (b) => modifyOrderByType(b, stackType, getRandomInt),
         (b) => calcYPositions(b),
         (b) => calcXPositions(b, svgCenterX),
-        (b) => addXFluctuation(b),
+        (b) => addXFluctuation(b, getRandomInt),
         (b) => alignToBottom(b, svgHeight),
       ];
 
@@ -77,7 +79,7 @@ export const StackedBlockChart = forwardRef<
 
       setBlocks(blocks);
       setLegendItems(legendItems);
-    }, [stackType, data]);
+    }, [stackType, data, getRandomInt]);
 
     return (
       <>

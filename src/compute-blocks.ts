@@ -3,7 +3,6 @@ import {
   calcHeight,
   getOrderdRandomInt,
   getRandomColor,
-  getRandomInt,
   shuffleArray,
 } from "./utils";
 
@@ -51,9 +50,10 @@ export function calcPercentage(
 /** Calculate the width and height of BlockDatum */
 export function calcWidthsAndHeights(
   data: BlockDatum[],
+  rndFn: (min: number, max: number) => number,
   opt?: { multiple: number }
 ): BlockDatum[] {
-  const widths = getOrderdRandomInt(10, 100, data.length);
+  const widths = getOrderdRandomInt(10, 100, data.length, rndFn);
   const multiple = opt?.multiple || 1;
   return data.map((datum, index) => ({
     ...datum,
@@ -146,12 +146,13 @@ function calcAdjustedWidthKeepingArea(
 
 export function modifyOrderByType(
   blocks: BlockDatum[],
-  type: StackType
+  type: StackType,
+  rndFn: (min: number, max: number) => number
 ): BlockDatum[] {
   if (type === "unstable-inverted") {
     return blocks.reverse();
   } else if (type === "shuffled") {
-    return shuffleArray(blocks);
+    return shuffleArray(blocks, rndFn);
   }
   return blocks;
 }
@@ -194,12 +195,15 @@ export function calcXPositions(
 /**
  * Add a random value to the X coordinate of the block
  */
-export function addXFluctuation(blocks: BlockDatum[]): BlockDatum[] {
+export function addXFluctuation(
+  blocks: BlockDatum[],
+  rndFn: (min: number, max: number) => number
+): BlockDatum[] {
   const resultBlocks: BlockDatum[] = [];
   for (const block of blocks) {
     const newBlock = { ...block };
 
-    const fluctuation = getRandomInt(-10, 10);
+    const fluctuation = rndFn(-10, 10);
     newBlock.x += fluctuation;
 
     resultBlocks.push(newBlock);
