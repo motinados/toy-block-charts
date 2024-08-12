@@ -44,7 +44,7 @@ export function shuffleArray<T>(
     shffledArray = [...array];
 
     for (let i = shffledArray.length - 1; i > 0; i--) {
-      const j = rndFn(0, i + 1);
+      const j = rndFn(0, i);
       const temp = shffledArray[i];
       shffledArray[i] = shffledArray[j];
       shffledArray[j] = temp;
