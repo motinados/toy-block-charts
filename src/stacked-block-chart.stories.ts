@@ -94,3 +94,17 @@ export const SameValue: Story = {
     ],
   },
 };
+
+export const Seeded: Story = {
+  args: {
+    stackType: "stable-balanced",
+    data: [
+      { value: 10, name: "apple" },
+      { value: 20, name: "banana" },
+      { value: 30, name: "cherry" },
+      { value: 40, name: "date" },
+      { value: 50, name: "elderberry" },
+    ],
+    seed: 100,
+  },
+};

@@ -29,6 +29,7 @@ export type StackedBlockDatum = {
 type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   stackType: StackType;
   data: StackedBlockDatum[];
+  seed?: number;
   showDataLabels?: boolean;
 };
 
@@ -37,7 +38,13 @@ export const StackedBlockChart = forwardRef<
   StackedBlockChartProps
 >(
   (
-    { stackType, data, showDataLabels = true, ...rest }: StackedBlockChartProps,
+    {
+      stackType,
+      data,
+      seed = 42,
+      showDataLabels = true,
+      ...rest
+    }: StackedBlockChartProps,
     ref
   ) => {
     const svgWidth = 400;
@@ -51,7 +58,7 @@ export const StackedBlockChart = forwardRef<
     const [legendItems, setLegendItems] = useState<
       { name: string; color: string }[]
     >([]);
-    const { getRandomInt } = useRandomGenerator(42);
+    const { getRandomInt } = useRandomGenerator(seed);
 
     useEffect(() => {
       const initialBlocks = data.map(createInitialBlockDatum);
