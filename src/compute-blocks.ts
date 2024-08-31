@@ -23,7 +23,7 @@ export function createInitialBlockDatum(datum: StackedBlockDatum): BlockDatum {
     y: 0,
     width: 0,
     height: 0,
-    fill: datum.color || defaultColor,
+    fill: datum.fill || defaultColor,
     percentage: 0,
   };
 }
