@@ -3,18 +3,19 @@ import {
   calcYPositions,
   calcPercentage,
   createInitialBlockDatum,
-  ensureBlockHasColor,
   calcXPositions,
   alignToBottom,
   modifyOrderByType,
   adjustTotalHeight,
   adjustSameValueBlocks,
+  defaultColor,
 } from "./compute-blocks";
+import { StackedBlockDatum } from "./stacked-block-chart";
 import { getRandomInt } from "./utils";
 
 describe("createInitialBlockDatum", () => {
   it("should create an initial block datum with default values", () => {
-    const datum = {
+    const datum: StackedBlockDatum = {
       value: 10,
       name: "A",
       color: "#000",
@@ -34,46 +35,36 @@ describe("createInitialBlockDatum", () => {
     });
   });
 
-  it("should create an initial block datum with empty fill if color is not provided", () => {
-    const datum = {
-      value: 20,
-      name: "B",
+  it("should add a random color if blockDatum does not have a fill", () => {
+    const block: StackedBlockDatum = {
+      value: 10,
+      name: "A",
+      color: "",
     };
 
-    const result = createInitialBlockDatum(datum);
+    const result = createInitialBlockDatum(block);
 
     expect(result).toEqual({
-      value: 20,
-      name: "B",
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      fill: "",
-      percentage: 0,
-    });
-  });
-
-  it("should add a random color if blockDatum does not have a fill", () => {
-    const block: BlockDatum = {
       value: 10,
       name: "A",
       x: 0,
       y: 0,
       width: 0,
       height: 0,
-      fill: "",
+      fill: defaultColor,
       percentage: 0,
-    };
-
-    const result = ensureBlockHasColor(block);
-
-    expect(result).toHaveProperty("fill");
-    expect(result.fill).not.toBe("");
+    });
   });
 
   it("should not modify blockDatum if it already has a fill", () => {
-    const block: BlockDatum = {
+    const block: StackedBlockDatum = {
+      value: 10,
+      name: "A",
+      color: "#000",
+    };
+
+    const result = createInitialBlockDatum(block);
+    expect(result).toEqual({
       value: 10,
       name: "A",
       x: 0,
@@ -82,10 +73,7 @@ describe("createInitialBlockDatum", () => {
       height: 0,
       fill: "#000",
       percentage: 0,
-    };
-
-    const result = ensureBlockHasColor(block);
-    expect(result).toEqual(block);
+    });
   });
 
   it("should calculate the percentage correctly", () => {
