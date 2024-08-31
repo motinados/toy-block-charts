@@ -20,11 +20,11 @@ export const StableBalanced: Story = {
   args: {
     stackType: "stable-balanced",
     data: [
-      { value: 10, name: "apple" },
-      { value: 20, name: "banana" },
-      { value: 30, name: "cherry" },
-      { value: 40, name: "date" },
-      { value: 50, name: "elderberry" },
+      { value: 10, name: "apple", fill: "#A7B3CD" },
+      { value: 20, name: "banana", fill: "#E6DA9E" },
+      { value: 30, name: "cherry", fill: "#CCD7AD" },
+      { value: 40, name: "date", fill: "#CDB296" },
+      { value: 50, name: "elderberry", fill: "#676155" },
     ],
   },
 };
@@ -33,11 +33,11 @@ export const UnstableInverted: Story = {
   args: {
     stackType: "unstable-inverted",
     data: [
-      { value: 10, name: "apple" },
-      { value: 20, name: "banana" },
-      { value: 30, name: "cherry" },
-      { value: 40, name: "date" },
-      { value: 50, name: "elderberry" },
+      { value: 10, name: "apple", fill: "#A7B3CD" },
+      { value: 20, name: "banana", fill: "#E6DA9E" },
+      { value: 30, name: "cherry", fill: "#CCD7AD" },
+      { value: 40, name: "date", fill: "#CDB296" },
+      { value: 50, name: "elderberry", fill: "#676155" },
     ],
   },
 };
@@ -46,24 +46,24 @@ export const Shuffled: Story = {
   args: {
     stackType: "shuffled",
     data: [
+      { value: 10, name: "apple", fill: "#A7B3CD" },
+      { value: 20, name: "banana", fill: "#E6DA9E" },
+      { value: 30, name: "cherry", fill: "#CCD7AD" },
+      { value: 40, name: "date", fill: "#CDB296" },
+      { value: 50, name: "elderberry", fill: "#676155" },
+    ],
+  },
+};
+
+export const WithoutSettingFills: Story = {
+  args: {
+    stackType: "stable-balanced",
+    data: [
       { value: 10, name: "apple" },
       { value: 20, name: "banana" },
       { value: 30, name: "cherry" },
       { value: 40, name: "date" },
       { value: 50, name: "elderberry" },
-    ],
-  },
-};
-
-export const WithCustomColors: Story = {
-  args: {
-    stackType: "stable-balanced",
-    data: [
-      { value: 10, name: "apple", fill: "#ff0000" },
-      { value: 20, name: "banana", fill: "#00ff00" },
-      { value: 30, name: "cherry", fill: "#0000ff" },
-      { value: 40, name: "date", fill: "#ffff00" },
-      { value: 50, name: "elderberry", fill: "#00ffff" },
     ],
   },
 };
@@ -72,11 +72,11 @@ export const WithoutDataLabels: Story = {
   args: {
     stackType: "stable-balanced",
     data: [
-      { value: 10, name: "apple" },
-      { value: 20, name: "banana" },
-      { value: 30, name: "cherry" },
-      { value: 40, name: "date" },
-      { value: 50, name: "elderberry" },
+      { value: 10, name: "apple", fill: "#A7B3CD" },
+      { value: 20, name: "banana", fill: "#E6DA9E" },
+      { value: 30, name: "cherry", fill: "#CCD7AD" },
+      { value: 40, name: "date", fill: "#CDB296" },
+      { value: 50, name: "elderberry", fill: "#676155" },
     ],
     showDataLabels: false,
   },
@@ -86,11 +86,11 @@ export const SameValue: Story = {
   args: {
     stackType: "stable-balanced",
     data: [
-      { value: 10, name: "apple" },
-      { value: 10, name: "banana" },
-      { value: 10, name: "cherry" },
-      { value: 10, name: "date" },
-      { value: 10, name: "elderberry" },
+      { value: 10, name: "apple", fill: "#A7B3CD" },
+      { value: 10, name: "banana", fill: "#E6DA9E" },
+      { value: 10, name: "cherry", fill: "#CCD7AD" },
+      { value: 10, name: "date", fill: "#CDB296" },
+      { value: 10, name: "elderberry", fill: "#676155" },
     ],
   },
 };
@@ -99,11 +99,11 @@ export const Seeded: Story = {
   args: {
     stackType: "stable-balanced",
     data: [
-      { value: 10, name: "apple" },
-      { value: 20, name: "banana" },
-      { value: 30, name: "cherry" },
-      { value: 40, name: "date" },
-      { value: 50, name: "elderberry" },
+      { value: 10, name: "apple", fill: "#A7B3CD" },
+      { value: 20, name: "banana", fill: "#E6DA9E" },
+      { value: 30, name: "cherry", fill: "#CCD7AD" },
+      { value: 40, name: "date", fill: "#CDB296" },
+      { value: 50, name: "elderberry", fill: "#676155" },
     ],
     seed: 100,
   },
