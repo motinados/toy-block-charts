@@ -17,6 +17,8 @@ export type BlockDatum = {
   percentage: number;
 };
 
+const defaultColor = "#808080";
+
 /** Create initial BlockDatum */
 export function createInitialBlockDatum(datum: StackedBlockDatum): BlockDatum {
   return {
@@ -26,7 +28,7 @@ export function createInitialBlockDatum(datum: StackedBlockDatum): BlockDatum {
     y: 0,
     width: 0,
     height: 0,
-    fill: datum.color || "",
+    fill: datum.color || defaultColor,
     percentage: 0,
   };
 }
