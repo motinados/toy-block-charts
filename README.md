@@ -67,3 +67,7 @@ npm install toy-block-charts
   ]}
 />
 ```
+
+## Acknowledgment of Color Scheme
+
+I have referenced the color settings from the website ["ColorLisa"](https://colorlisa.com/)
