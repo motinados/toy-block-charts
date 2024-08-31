@@ -1,10 +1,5 @@
 import { StackedBlockDatum, StackType } from "./stacked-block-chart";
-import {
-  calcHeight,
-  getOrderdRandomInt,
-  getRandomColor,
-  shuffleArray,
-} from "./utils";
+import { calcHeight, getOrderdRandomInt, shuffleArray } from "./utils";
 
 export type BlockDatum = {
   value: number;
@@ -17,6 +12,8 @@ export type BlockDatum = {
   percentage: number;
 };
 
+export const defaultColor = "#808080";
+
 /** Create initial BlockDatum */
 export function createInitialBlockDatum(datum: StackedBlockDatum): BlockDatum {
   return {
@@ -26,17 +23,9 @@ export function createInitialBlockDatum(datum: StackedBlockDatum): BlockDatum {
     y: 0,
     width: 0,
     height: 0,
-    fill: datum.color || "",
+    fill: datum.color || defaultColor,
     percentage: 0,
   };
-}
-
-/** Ensure BlockDatum has color */
-export function ensureBlockHasColor(blockDatum: BlockDatum): BlockDatum {
-  if (!blockDatum.fill) {
-    return { ...blockDatum, fill: getRandomColor() };
-  }
-  return { ...blockDatum };
 }
 
 /** Calculate the percentage of BlockDatum */

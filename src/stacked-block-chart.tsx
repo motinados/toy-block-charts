@@ -13,7 +13,6 @@ import {
   calcXPositions,
   calcYPositions,
   createInitialBlockDatum,
-  ensureBlockHasColor,
   modifyOrderByType,
 } from "./compute-blocks";
 import { useRandomGenerator } from "./use-random-generator";
@@ -66,7 +65,6 @@ export const StackedBlockChart = forwardRef<
       const svgCenterX = (svgWidth - legendWidth) / 2 - blocksOffsetX;
 
       const ops: ((b: BlockDatum[]) => BlockDatum[])[] = [
-        (b) => b.map(ensureBlockHasColor),
         (b) => b.map((datum) => calcPercentage(datum, total)),
         (b) => b.sort((a, b) => a.percentage - b.percentage),
         (b) => calcWidthsAndHeights(b, getRandomInt, { multiple: 100 }),
