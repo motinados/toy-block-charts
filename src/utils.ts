@@ -2,10 +2,6 @@ export function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function getRandomColor() {
-  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-}
-
 // Generate multiple random numbers and return an array of them sorted in ascending order
 export function getOrderdRandomInt(
   min: number,
