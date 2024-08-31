@@ -59,11 +59,11 @@ export const WithCustomColors: Story = {
   args: {
     stackType: "stable-balanced",
     data: [
-      { value: 10, name: "apple", color: "#ff0000" },
-      { value: 20, name: "banana", color: "#00ff00" },
-      { value: 30, name: "cherry", color: "#0000ff" },
-      { value: 40, name: "date", color: "#ffff00" },
-      { value: 50, name: "elderberry", color: "#00ffff" },
+      { value: 10, name: "apple", fill: "#ff0000" },
+      { value: 20, name: "banana", fill: "#00ff00" },
+      { value: 30, name: "cherry", fill: "#0000ff" },
+      { value: 40, name: "date", fill: "#ffff00" },
+      { value: 50, name: "elderberry", fill: "#00ffff" },
     ],
   },
 };

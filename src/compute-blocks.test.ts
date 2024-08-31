@@ -18,7 +18,7 @@ describe("createInitialBlockDatum", () => {
     const datum: StackedBlockDatum = {
       value: 10,
       name: "A",
-      color: "#000",
+      fill: "#000",
     };
 
     const result = createInitialBlockDatum(datum);
@@ -39,7 +39,7 @@ describe("createInitialBlockDatum", () => {
     const block: StackedBlockDatum = {
       value: 10,
       name: "A",
-      color: "",
+      fill: "",
     };
 
     const result = createInitialBlockDatum(block);
@@ -60,7 +60,7 @@ describe("createInitialBlockDatum", () => {
     const block: StackedBlockDatum = {
       value: 10,
       name: "A",
-      color: "#000",
+      fill: "#000",
     };
 
     const result = createInitialBlockDatum(block);

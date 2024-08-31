@@ -22,7 +22,7 @@ export type StackType = "stable-balanced" | "unstable-inverted" | "shuffled";
 export type StackedBlockDatum = {
   value: number;
   name: string;
-  color?: string;
+  fill?: string;
 };
 
 type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
