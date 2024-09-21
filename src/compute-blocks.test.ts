@@ -9,11 +9,27 @@ import {
   adjustTotalHeight,
   adjustSameValueBlocks,
   defaultColor,
+  addXFluctuation,
 } from "./compute-blocks";
 import { StackedBlockDatum } from "./stacked-block-chart";
 import { getRandomInt } from "./utils";
 
 describe("createInitialBlockDatum", () => {
+  const mockRndFn = jest.fn();
+
+  // A function to check if there is an overlap in the x-axis position of two blocks
+  const isOverlap = (upper: BlockDatum, lower: BlockDatum) => {
+    const upperStart = upper.x;
+    const upperEnd = upper.x + upper.width;
+    const lowerStart = lower.x;
+    const lowerEnd = lower.x + lower.width;
+    return upperStart < lowerEnd && lowerStart < upperEnd;
+  };
+
+  beforeEach(() => {
+    mockRndFn.mockClear();
+  });
+
   it("should create an initial block datum with default values", () => {
     const datum: StackedBlockDatum = {
       value: 10,
@@ -232,6 +248,78 @@ describe("createInitialBlockDatum", () => {
         percentage: 0,
       },
     ]);
+  });
+
+  it("should add a random value to the X coordinate of the block 1", () => {
+    // centerX is 0.
+
+    // the upper block is on the left side of the lower block.
+    const blocks: BlockDatum[] = [
+      {
+        value: 0,
+        name: "upper",
+        x: -20,
+        y: 0,
+        width: 20,
+        height: 0,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 0,
+        name: "lower",
+        x: 0,
+        y: 10,
+        width: 20,
+        height: 0,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+
+    mockRndFn.mockReturnValueOnce(0).mockReturnValueOnce(0);
+
+    const result = addXFluctuation(blocks, mockRndFn);
+    const blockA = result[0];
+    const blockB = result[1];
+
+    expect(isOverlap(blockA, blockB)).toBe(true);
+  });
+
+  it("should add a random value to the X coordinate of the block 2", () => {
+    // centerX is 0
+
+    // the upper block is on the right side of the lower block.
+    const blocks: BlockDatum[] = [
+      {
+        value: 0,
+        name: "upper",
+        x: 0,
+        y: 0,
+        width: 20,
+        height: 0,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 0,
+        name: "lower",
+        x: -20,
+        y: 10,
+        width: 20,
+        height: 0,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+
+    mockRndFn.mockReturnValueOnce(0).mockReturnValueOnce(0);
+
+    const result = addXFluctuation(blocks, mockRndFn);
+    const blockA = result[0];
+    const blockB = result[1];
+
+    expect(isOverlap(blockA, blockB)).toBe(true);
   });
 
   it("should align blocks to the bottom of the svg", () => {
