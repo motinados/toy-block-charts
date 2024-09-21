@@ -182,49 +182,46 @@ export function calcXPositions(
 }
 
 /**
- * Add a random value to the X coordinate of the block
+ * Add a random value to the X coordinate of the block.
+ * Note: The blocks are assumed to be arranged from top to bottom.
  */
 export function addXFluctuation(
   blocks: BlockDatum[],
   rndFn: (min: number, max: number) => number
 ): BlockDatum[] {
-  // blocks are arranged in order from the top, so rearrange them in reverse order.
-  // Because we want to align the lower block and the upper block to overlap on the x-axis.
-  // This makes it look like it is stacked on top of the lower block.
-  const reversedBlocks = blocks.slice().reverse();
+  const minFluctuation = -10;
+  const maxFluctuation = 10;
+  const overlap = 1;
 
-  let lastBlock: BlockDatum | null = null;
-  const resultBlocks: BlockDatum[] = [];
-  for (const block of reversedBlocks) {
+  // process blocks from bottom to top
+  return blocks.reduceRight<BlockDatum[]>((acc, block) => {
     const newBlock = { ...block };
 
-    const fluctuation = rndFn(-10, 10);
+    const fluctuation = rndFn(minFluctuation, maxFluctuation);
     newBlock.x += fluctuation;
 
-    if (lastBlock) {
-      const overlapValue = 1;
-      const lowerBlock = lastBlock;
-      const lowerBlockStartX = lowerBlock.x;
-      const lowerBlockEndX = lowerBlock.x + lowerBlock.width;
-      const upperBlock = newBlock;
-      const upperBlockStartX = upperBlock.x;
-      const upperBlockEndX = upperBlock.x + upperBlock.width;
-      if (upperBlockEndX <= lowerBlockStartX) {
-        // If the upper block is on the left side of the lower block
-        const diff = upperBlockEndX - lowerBlockStartX;
-        upperBlock.x += diff + overlapValue;
-      } else if (upperBlockStartX >= lowerBlockEndX) {
-        // If the upper block is on the right side of the lower block
-        const diff = lowerBlockEndX - upperBlockStartX;
-        upperBlock.x += diff - overlapValue;
+    // Adjust the position so that the blocks overlap
+    if (acc.length > 0) {
+      const lowerBlock = acc[0];
+      const lowerStartX = lowerBlock.x;
+      const lowerEndX = lowerBlock.x + lowerBlock.width;
+      const upperStartX = newBlock.x;
+      const upperEndX = newBlock.x + newBlock.width;
+
+      if (upperEndX <= lowerStartX) {
+        // Upper block is to the left of the lower block
+        const adjustment = lowerStartX - upperEndX + overlap;
+        newBlock.x += adjustment;
+      } else if (upperStartX >= lowerEndX) {
+        // Upper block is to the right of the lower block
+        const adjustment = upperStartX - lowerEndX + overlap;
+        newBlock.x -= adjustment;
       }
     }
 
-    lastBlock = newBlock;
-    resultBlocks.unshift(newBlock);
-  }
-
-  return resultBlocks;
+    acc.unshift(newBlock);
+    return acc;
+  }, []);
 }
 
 //Align BlockItem to the bottom of the svg based on svgHeight
