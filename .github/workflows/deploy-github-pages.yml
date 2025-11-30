@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - "main"
+  pull_request:
+    branches:
+      - "main"
 
 permissions:
   contents: read
@@ -27,7 +30,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22 # プロジェクトに合わせて 20/22/24 でも OK
+          node-version: 22
           cache: pnpm
 
       - name: Install dependencies
@@ -37,9 +40,11 @@ jobs:
         run: pnpm run build-storybook
 
       - name: Upload Storybook Artifact
+        if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
           path: storybook-static
 
       - name: Deploy to GitHub Pages
+        if: github.event_name == 'push'
         uses: actions/deploy-pages@v4
