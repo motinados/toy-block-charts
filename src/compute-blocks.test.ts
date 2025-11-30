@@ -1,3 +1,4 @@
+import { describe, beforeEach, it, expect, vi } from "vitest";
 import {
   BlockDatum,
   calcYPositions,
@@ -15,7 +16,7 @@ import { StackedBlockDatum } from "./stacked-block-chart";
 import { getRandomInt } from "./utils";
 
 describe("createInitialBlockDatum", () => {
-  const mockRndFn = jest.fn();
+  const mockRndFn = vi.fn();
 
   // A function to check if there is an overlap in the x-axis position of two blocks
   const isOverlap = (upper: BlockDatum, lower: BlockDatum) => {
