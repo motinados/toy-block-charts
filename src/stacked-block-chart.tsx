@@ -3,7 +3,6 @@ import Block from "./block";
 import BlockLabels from "./block-labels";
 import Legend from "./legend";
 import { useComputedBlocks } from "./use-computed-blocks";
-import { useRandomGenerator } from "./use-random-generator";
 
 export type StackType = "stable-balanced" | "unstable-inverted" | "shuffled";
 
@@ -40,8 +39,7 @@ export const StackedBlockChart = forwardRef<
     const legendItemHeight = 16;
     const legendPaddingTop = 10;
     const legendPaddingRight = 10;
-    const { getRandomInt } = useRandomGenerator(seed);
-    const { blocks, legendItems } = useComputedBlocks(data, stackType, getRandomInt);
+    const { blocks, legendItems } = useComputedBlocks(data, stackType, seed);
 
     return (
       <>

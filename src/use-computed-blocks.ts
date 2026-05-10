@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { unsafeUniformIntDistribution, xoroshiro128plus } from "pure-rand";
 import {
   BlockDatum,
   addXFluctuation,
@@ -27,9 +28,13 @@ type UseComputedBlocksResult = {
 export function useComputedBlocks(
   data: StackedBlockDatum[],
   stackType: StackType,
-  getRandomInt: (min: number, max: number) => number
+  seed: number
 ): UseComputedBlocksResult {
   return useMemo(() => {
+    const generator = xoroshiro128plus(seed);
+    const getRandomInt = (min: number, max: number) =>
+      unsafeUniformIntDistribution(min, max, generator);
+
     const initialBlocks = data.map(createInitialBlockDatum);
     const total = initialBlocks.reduce((acc, d) => acc + d.value, 0);
     const svgCenterX = (SVG_WIDTH - LEGEND_WIDTH) / 2 - BLOCKS_OFFSET_X;
@@ -52,5 +57,5 @@ export function useComputedBlocks(
       blocks: computed,
       legendItems: computed.map((d) => ({ name: d.name, color: d.fill })),
     };
-  }, [data, stackType, getRandomInt]);
+  }, [data, stackType, seed]);
 }
