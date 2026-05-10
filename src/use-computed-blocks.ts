@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import {
   BlockDatum,
   addXFluctuation,
@@ -29,12 +29,7 @@ export function useComputedBlocks(
   stackType: StackType,
   getRandomInt: (min: number, max: number) => number
 ): UseComputedBlocksResult {
-  const [blocks, setBlocks] = useState<BlockDatum[]>([]);
-  const [legendItems, setLegendItems] = useState<
-    { name: string; color: string }[]
-  >([]);
-
-  useEffect(() => {
+  return useMemo(() => {
     const initialBlocks = data.map(createInitialBlockDatum);
     const total = initialBlocks.reduce((acc, d) => acc + d.value, 0);
     const svgCenterX = (SVG_WIDTH - LEGEND_WIDTH) / 2 - BLOCKS_OFFSET_X;
@@ -53,9 +48,9 @@ export function useComputedBlocks(
     ];
 
     const computed = ops.reduce((acc, op) => op(acc), initialBlocks);
-    setBlocks(computed);
-    setLegendItems(computed.map((d) => ({ name: d.name, color: d.fill })));
+    return {
+      blocks: computed,
+      legendItems: computed.map((d) => ({ name: d.name, color: d.fill })),
+    };
   }, [data, stackType, getRandomInt]);
-
-  return { blocks, legendItems };
 }
