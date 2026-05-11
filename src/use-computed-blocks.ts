@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { unsafeUniformIntDistribution, xoroshiro128plus } from "pure-rand";
 import {
-  BlockDatum,
   addXFluctuation,
   adjustSameValueBlocks,
   adjustTotalHeight,
@@ -13,7 +12,12 @@ import {
   createInitialBlockDatum,
   modifyOrderByType,
 } from "./compute-blocks";
-import { StackedBlockDatum, StackType } from "./stacked-block-chart";
+import type {
+  BlockDatum,
+  LegendItem,
+  StackedBlockDatum,
+  StackType,
+} from "./types/chart";
 
 const SVG_WIDTH = 400;
 const SVG_HEIGHT = 300;
@@ -22,7 +26,7 @@ const LEGEND_WIDTH = 100;
 
 type UseComputedBlocksResult = {
   blocks: BlockDatum[];
-  legendItems: { name: string; color: string }[];
+  legendItems: LegendItem[];
 };
 
 export function useComputedBlocks(

@@ -2,15 +2,10 @@ import { ComponentPropsWithRef, forwardRef } from "react";
 import Block from "./block";
 import BlockLabels from "./block-labels";
 import Legend from "./legend";
+import type { StackedBlockDatum, StackType } from "./types/chart";
 import { useComputedBlocks } from "./use-computed-blocks";
 
-export type StackType = "stable-balanced" | "unstable-inverted" | "shuffled";
-
-export type StackedBlockDatum = {
-  value: number;
-  name: string;
-  fill?: string;
-};
+export type { StackedBlockDatum, StackType } from "./types/chart";
 
 type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   stackType: StackType;
