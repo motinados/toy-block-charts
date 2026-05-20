@@ -19,10 +19,10 @@ import type {
   StackType,
 } from "./types/chart";
 
-const SVG_WIDTH = 400;
-const SVG_HEIGHT = 300;
+const DEFAULT_SVG_WIDTH = 400;
+const DEFAULT_SVG_HEIGHT = 300;
 const BLOCKS_OFFSET_X = 40;
-const LEGEND_WIDTH = 100;
+const DEFAULT_LEGEND_WIDTH = 100;
 
 type UseComputedBlocksResult = {
   blocks: BlockDatum[];
@@ -32,7 +32,12 @@ type UseComputedBlocksResult = {
 export function useComputedBlocks(
   data: StackedBlockDatum[],
   stackType: StackType,
-  seed: number
+  seed: number,
+  {
+    width = DEFAULT_SVG_WIDTH,
+    height = DEFAULT_SVG_HEIGHT,
+    legendWidth = DEFAULT_LEGEND_WIDTH,
+  }: { width?: number; height?: number; legendWidth?: number } = {}
 ): UseComputedBlocksResult {
   return useMemo(() => {
     const generator = xoroshiro128plus(seed);
@@ -41,19 +46,19 @@ export function useComputedBlocks(
 
     const initialBlocks = data.map(createInitialBlockDatum);
     const total = initialBlocks.reduce((acc, d) => acc + d.value, 0);
-    const svgCenterX = (SVG_WIDTH - LEGEND_WIDTH) / 2 - BLOCKS_OFFSET_X;
+    const svgCenterX = (width - legendWidth) / 2 - BLOCKS_OFFSET_X;
 
     const ops: ((b: BlockDatum[]) => BlockDatum[])[] = [
       (b) => b.map((datum) => calcPercentage(datum, total)),
       (b) => b.sort((a, b) => a.percentage - b.percentage),
       (b) => calcWidthsAndHeights(b, getRandomInt, { multiple: 100 }),
       (b) => adjustSameValueBlocks(b),
-      (b) => adjustTotalHeight(b, SVG_HEIGHT),
+      (b) => adjustTotalHeight(b, height),
       (b) => modifyOrderByType(b, stackType, getRandomInt),
       (b) => calcYPositions(b),
       (b) => calcXPositions(b, svgCenterX),
       (b) => addXFluctuation(b, getRandomInt),
-      (b) => alignToBottom(b, SVG_HEIGHT),
+      (b) => alignToBottom(b, height),
     ];
 
     const computed = ops.reduce((acc, op) => op(acc), initialBlocks);
@@ -61,5 +66,5 @@ export function useComputedBlocks(
       blocks: computed,
       legendItems: computed.map((d) => ({ name: d.name, color: d.fill })),
     };
-  }, [data, stackType, seed]);
+  }, [data, stackType, seed, width, height, legendWidth]);
 }
