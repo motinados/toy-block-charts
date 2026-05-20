@@ -7,7 +7,7 @@ import { useComputedBlocks } from "./use-computed-blocks";
 
 export type { StackedBlockDatum, StackType } from "./types/chart";
 
-type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
+export type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   stackType: StackType;
   data: StackedBlockDatum[];
   seed?: number;
