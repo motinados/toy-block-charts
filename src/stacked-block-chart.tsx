@@ -12,6 +12,9 @@ export type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   data: StackedBlockDatum[];
   seed?: number;
   showDataLabels?: boolean;
+  width?: number;
+  height?: number;
+  legendWidth?: number;
 };
 
 export const StackedBlockChart = forwardRef<
@@ -24,17 +27,23 @@ export const StackedBlockChart = forwardRef<
       data,
       seed = 42,
       showDataLabels = true,
+      width = 400,
+      height = 300,
+      legendWidth = 100,
       ...rest
     }: StackedBlockChartProps,
     ref
   ) => {
-    const svgWidth = 400;
-    const svgHeight = 300;
-    const legendWidth = 100;
+    const svgWidth = width;
+    const svgHeight = height;
     const legendItemHeight = 16;
     const legendPaddingTop = 10;
     const legendPaddingRight = 10;
-    const { blocks, legendItems } = useComputedBlocks(data, stackType, seed);
+    const { blocks, legendItems } = useComputedBlocks(data, stackType, seed, {
+      width: svgWidth,
+      height: svgHeight,
+      legendWidth,
+    });
 
     return (
       <>
