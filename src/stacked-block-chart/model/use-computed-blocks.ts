@@ -17,7 +17,7 @@ import type {
   LegendItem,
   StackedBlockDatum,
   StackType,
-} from "./types/chart";
+} from "./types";
 
 const SVG_WIDTH = 400;
 const SVG_HEIGHT = 300;

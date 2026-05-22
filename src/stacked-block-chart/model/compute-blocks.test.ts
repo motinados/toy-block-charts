@@ -12,7 +12,7 @@ import {
   defaultColor,
   addXFluctuation,
 } from "./compute-blocks";
-import { StackedBlockDatum } from "./stacked-block-chart";
+import type { StackedBlockDatum } from "./types";
 import { getRandomInt } from "./utils";
 
 describe("createInitialBlockDatum", () => {
