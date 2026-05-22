@@ -1,11 +1,11 @@
 import { ComponentPropsWithRef, forwardRef } from "react";
-import Block from "./block";
-import BlockLabels from "./block-labels";
-import Legend from "./legend";
-import type { StackedBlockDatum, StackType } from "./types/chart";
-import { useComputedBlocks } from "./use-computed-blocks";
+import Block from "./components/block";
+import BlockLabels from "./components/block-labels";
+import Legend from "./components/legend";
+import type { StackedBlockDatum, StackType } from "./model/types";
+import { useComputedBlocks } from "./model/use-computed-blocks";
 
-export type { StackedBlockDatum, StackType } from "./types/chart";
+export type { StackedBlockDatum, StackType } from "./model/types";
 
 type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   stackType: StackType;

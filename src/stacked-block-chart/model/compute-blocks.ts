@@ -1,7 +1,7 @@
-import type { BlockDatum, StackedBlockDatum, StackType } from "./types/chart";
+import type { BlockDatum, StackedBlockDatum, StackType } from "./types";
 import { calcHeight, getOrderdRandomInt, shuffleArray } from "./utils";
 
-export type { BlockDatum } from "./types/chart";
+export type { BlockDatum } from "./types";
 
 export const defaultColor = "#808080";
 
