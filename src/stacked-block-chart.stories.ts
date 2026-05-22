@@ -108,3 +108,18 @@ export const Seeded: Story = {
     seed: 100,
   },
 };
+
+export const WithCustomSize: Story = {
+  args: {
+    stackType: "stable-balanced",
+    width: 600,
+    height: 450,
+    data: [
+      { value: 10, name: "apple", fill: "#4E7989" },
+      { value: 20, name: "banana", fill: "#A9011B" },
+      { value: 30, name: "cherry", fill: "#E4A826" },
+      { value: 40, name: "date", fill: "#80944E" },
+      { value: 50, name: "elderberry", fill: "#DCD6B2" },
+    ],
+  },
+};

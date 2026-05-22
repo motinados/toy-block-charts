@@ -24,6 +24,9 @@ export const StackedBlockChart = forwardRef<
       data,
       seed = 42,
       showDataLabels = true,
+      width,
+      height,
+      style,
       ...rest
     }: StackedBlockChartProps,
     ref
@@ -41,8 +44,16 @@ export const StackedBlockChart = forwardRef<
         <svg
           ref={ref}
           xmlns="http://www.w3.org/2000/svg"
+          width={width}
+          height={height}
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          style={{ width: "100%", height: "auto" }}
+          style={{
+            width: "100%",
+            height: "auto",
+            ...(width === undefined ? {} : { maxWidth: width }),
+            ...(height === undefined ? {} : { maxHeight: height }),
+            ...style,
+          }}
           {...rest}
         >
           {blocks.map((block, index) => (
