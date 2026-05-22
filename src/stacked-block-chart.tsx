@@ -7,14 +7,11 @@ import { useComputedBlocks } from "./use-computed-blocks";
 
 export type { StackedBlockDatum, StackType } from "./types/chart";
 
-export type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
+type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   stackType: StackType;
   data: StackedBlockDatum[];
   seed?: number;
   showDataLabels?: boolean;
-  width?: number;
-  height?: number;
-  legendWidth?: number;
 };
 
 export const StackedBlockChart = forwardRef<
@@ -27,31 +24,36 @@ export const StackedBlockChart = forwardRef<
       data,
       seed = 42,
       showDataLabels = true,
-      width = 400,
-      height = 300,
-      legendWidth = 100,
+      width,
+      height,
+      style,
       ...rest
     }: StackedBlockChartProps,
     ref
   ) => {
-    const svgWidth = width;
-    const svgHeight = height;
+    const svgWidth = 400;
+    const svgHeight = 300;
+    const legendWidth = 100;
     const legendItemHeight = 16;
     const legendPaddingTop = 10;
     const legendPaddingRight = 10;
-    const { blocks, legendItems } = useComputedBlocks(data, stackType, seed, {
-      width: svgWidth,
-      height: svgHeight,
-      legendWidth,
-    });
+    const { blocks, legendItems } = useComputedBlocks(data, stackType, seed);
 
     return (
       <>
         <svg
           ref={ref}
           xmlns="http://www.w3.org/2000/svg"
+          width={width}
+          height={height}
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          style={{ width: "100%", height: "auto" }}
+          style={{
+            width: "100%",
+            height: "auto",
+            ...(width === undefined ? {} : { maxWidth: width }),
+            ...(height === undefined ? {} : { maxHeight: height }),
+            ...style,
+          }}
           {...rest}
         >
           {blocks.map((block, index) => (
