@@ -17,6 +17,18 @@ npm install toy-block-charts
 
 ## Usage
 
+## API Reference
+
+### `StackedBlockChartProps`
+
+| Prop | Required | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `stackType` | Yes | `stable-balanced \| unstable-inverted \| shuffled` | - | Stacking algorithm type. |
+| `data` | Yes | `{ name: string; value: number; fill?: string }[]` | - | Input data for each block segment. If `fill` is not provided, colors are assigned automatically (see `WithoutSettingFills` story behavior). |
+| `seed` | No | `number` | `42` | Seed value used for reproducibility in `shuffled`-based layouts. |
+| `showDataLabels` | No | `boolean` | `true` | Whether to render labels on blocks. |
+| `width` / `height` | No | `ComponentPropsWithRef<"svg">["width"]` / `ComponentPropsWithRef<"svg">["height"]` | `undefined` | SVG size options. They are passed to the `<svg>` `width`/`height` attributes, while `viewBox="0 0 400 300"` is fixed. When specified, they also constrain responsive rendering via `maxWidth` / `maxHeight` styles. |
+
 ### Stable Balanced
 
 ![stable balanced chart](./assets/image-stable-balanced.jpg)
