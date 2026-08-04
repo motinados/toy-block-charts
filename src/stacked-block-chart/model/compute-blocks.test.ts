@@ -11,6 +11,7 @@ import {
   adjustSameValueBlocks,
   defaultColor,
   addXFluctuation,
+  filterDrawableData,
 } from "./compute-blocks";
 import type { StackedBlockDatum } from "./types";
 import { getRandomInt } from "./utils";
@@ -818,5 +819,52 @@ describe("adjustSameValueBlocks", () => {
         percentage: 0,
       },
     ]);
+  });
+});
+
+describe("filterDrawableData", () => {
+  it("should keep data whose values are finite and not negative", () => {
+    const data: StackedBlockDatum[] = [
+      { value: 10, name: "A" },
+      { value: 0, name: "B" },
+      { value: 20.5, name: "C" },
+    ];
+
+    expect(filterDrawableData(data)).toEqual(data);
+  });
+
+  it("should remove data with a negative value", () => {
+    const data: StackedBlockDatum[] = [
+      { value: -10, name: "A" },
+      { value: 20, name: "B" },
+    ];
+
+    expect(filterDrawableData(data)).toEqual([{ value: 20, name: "B" }]);
+  });
+
+  it("should remove data whose value is not a finite number", () => {
+    const data: StackedBlockDatum[] = [
+      { value: Number.NaN, name: "A" },
+      { value: Number.POSITIVE_INFINITY, name: "B" },
+      { value: Number.NEGATIVE_INFINITY, name: "C" },
+      { value: 20, name: "D" },
+    ];
+
+    expect(filterDrawableData(data)).toEqual([{ value: 20, name: "D" }]);
+  });
+
+  it("should return an empty array for an empty array", () => {
+    expect(filterDrawableData([])).toEqual([]);
+  });
+
+  it("should not modify the given array", () => {
+    const data: StackedBlockDatum[] = [
+      { value: -10, name: "A" },
+      { value: 20, name: "B" },
+    ];
+
+    filterDrawableData(data);
+
+    expect(data).toHaveLength(2);
   });
 });

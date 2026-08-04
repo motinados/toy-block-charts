@@ -5,6 +5,20 @@ export type { BlockDatum } from "./types";
 
 export const defaultColor = "#808080";
 
+/**
+ * Keep only the data that can be drawn as an area.
+ * Blocks are sized by area, so a value that is not a finite number has no size
+ * to derive, and a negative value has no area to represent. Zero is kept: it
+ * has a well defined area of nothing, and the name still belongs in the legend.
+ */
+export function filterDrawableData(
+  data: StackedBlockDatum[]
+): StackedBlockDatum[] {
+  return data.filter(
+    (datum) => Number.isFinite(datum.value) && datum.value >= 0
+  );
+}
+
 /** Create initial BlockDatum */
 export function createInitialBlockDatum(datum: StackedBlockDatum): BlockDatum {
   return {

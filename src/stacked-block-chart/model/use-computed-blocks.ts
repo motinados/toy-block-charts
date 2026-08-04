@@ -10,6 +10,7 @@ import {
   calcXPositions,
   calcYPositions,
   createInitialBlockDatum,
+  filterDrawableData,
   modifyOrderByType,
 } from "./compute-blocks";
 import type {
@@ -39,8 +40,15 @@ export function useComputedBlocks(
     const getRandomInt = (min: number, max: number) =>
       unsafeUniformIntDistribution(min, max, generator);
 
-    const initialBlocks = data.map(createInitialBlockDatum);
+    const initialBlocks = filterDrawableData(data).map(createInitialBlockDatum);
     const total = initialBlocks.reduce((acc, d) => acc + d.value, 0);
+
+    // Every size in the pipeline is derived from a share of the total, so
+    // without a positive total there is nothing to lay out.
+    if (total <= 0) {
+      return { blocks: [], legendItems: [] };
+    }
+
     const svgCenterX = (SVG_WIDTH - LEGEND_WIDTH) / 2 - BLOCKS_OFFSET_X;
 
     const ops: ((b: BlockDatum[]) => BlockDatum[])[] = [
