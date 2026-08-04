@@ -79,9 +79,10 @@ export function adjustSameValueBlocks(data: BlockDatum[]): BlockDatum[] {
 }
 
 /**
- *  If the total height exceeds the maximum height, adjust the height.
- *  If the height needs to be adjusted, expand the width of the last block and adjust the height.
- *  Note: Adjust only the last block
+ *  If the total height exceeds the maximum height, shrink every block by the same
+ *  scale factor so that the stack fits.
+ *  Scaling both dimensions keeps the area ratio between blocks intact, so the
+ *  "area represents the value" encoding still holds after the adjustment.
  */
 export function adjustTotalHeight(
   data: BlockDatum[],
@@ -92,36 +93,13 @@ export function adjustTotalHeight(
     return data;
   }
 
-  const diff = totalHeight - maxHeight;
-  const lastBlock = data[data.length - 1];
-  const newHeight = lastBlock.height - diff;
-  const newWidth = calcAdjustedWidthKeepingArea(
-    lastBlock.width,
-    lastBlock.height,
-    newHeight
-  );
+  const scale = maxHeight / totalHeight;
 
-  const results = [...data];
-  results[results.length - 1] = {
-    ...lastBlock,
-    width: newWidth,
-    height: newHeight,
-  };
-
-  return results;
-}
-
-/**
- * Calculate the width to change the height while keeping the area
- */
-function calcAdjustedWidthKeepingArea(
-  currentWidth: number,
-  currentHeight: number,
-  targetHeight: number
-) {
-  const area = currentWidth * currentHeight;
-  const newWidth = area / targetHeight;
-  return newWidth;
+  return data.map((datum) => ({
+    ...datum,
+    width: datum.width * scale,
+    height: datum.height * scale,
+  }));
 }
 
 export function modifyOrderByType(
