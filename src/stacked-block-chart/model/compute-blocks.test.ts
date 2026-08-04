@@ -582,7 +582,7 @@ describe("createInitialBlockDatum", () => {
     expect(result).toEqual(data);
   });
 
-  it("should adjust the height of the last block to fit within maxHeight", () => {
+  it("should scale every block so that the total height fits within maxHeight", () => {
     const data: BlockDatum[] = [
       {
         value: 10,
@@ -619,14 +619,26 @@ describe("createInitialBlockDatum", () => {
 
     const result = adjustTotalHeight(data, maxHeight);
 
-    expect(result).toEqual([
+    // total height is 120, so every block shrinks by 100 / 120
+    const scale = 100 / 120;
+    result.forEach((block, index) => {
+      expect(block.width).toBeCloseTo(data[index].width * scale);
+      expect(block.height).toBeCloseTo(data[index].height * scale);
+    });
+
+    const totalHeight = result.reduce((acc, d) => acc + d.height, 0);
+    expect(totalHeight).toBeCloseTo(maxHeight);
+  });
+
+  it("should keep every block positive even when the excess exceeds the height of the last block", () => {
+    const data: BlockDatum[] = [
       {
         value: 10,
         name: "A",
         x: 0,
         y: 0,
-        width: 10,
-        height: 50,
+        width: 20,
+        height: 100,
         fill: "#000",
         percentage: 0,
       },
@@ -636,7 +648,7 @@ describe("createInitialBlockDatum", () => {
         x: 0,
         y: 0,
         width: 20,
-        height: 30,
+        height: 100,
         fill: "#000",
         percentage: 0,
       },
@@ -645,12 +657,57 @@ describe("createInitialBlockDatum", () => {
         name: "C",
         x: 0,
         y: 0,
-        width: 60,
-        height: 20,
+        width: 50,
+        height: 10,
         fill: "#000",
         percentage: 0,
       },
-    ]);
+    ];
+    // the excess (210 - 50 = 160) is far larger than the last block's height
+    const maxHeight = 50;
+
+    const result = adjustTotalHeight(data, maxHeight);
+
+    result.forEach((block) => {
+      expect(block.width).toBeGreaterThan(0);
+      expect(block.height).toBeGreaterThan(0);
+      expect(Number.isFinite(block.width)).toBe(true);
+      expect(Number.isFinite(block.height)).toBe(true);
+    });
+
+    const totalHeight = result.reduce((acc, d) => acc + d.height, 0);
+    expect(totalHeight).toBeCloseTo(maxHeight);
+  });
+
+  it("should keep blocks with the same shape identical after the adjustment", () => {
+    const data: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 30,
+        height: 60,
+        fill: "#000",
+        percentage: 0,
+      },
+      {
+        value: 10,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 30,
+        height: 60,
+        fill: "#000",
+        percentage: 0,
+      },
+    ];
+    const maxHeight = 100;
+
+    const result = adjustTotalHeight(data, maxHeight);
+
+    expect(result[0].width).toBeCloseTo(result[1].width);
+    expect(result[0].height).toBeCloseTo(result[1].height);
   });
 });
 describe("adjustSameValueBlocks", () => {
