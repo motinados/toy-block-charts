@@ -27,8 +27,8 @@ export default function BlockLabels({ blocks }: BlockLabelsProps) {
           x={label.x}
           y={label.y}
           textAnchor="start"
-          alignmentBaseline="middle"
-          fill="black"
+          dominantBaseline="middle"
+          fill="currentColor"
           fontSize="12"
         >
           {label.text}
