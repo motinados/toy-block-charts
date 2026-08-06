@@ -24,7 +24,7 @@ export default function Legend({
       {items.map((item, index) => (
         <g key={index} transform={`translate(0, ${index * itemHeight})`}>
           <rect width="10" height="10" fill={item.color} />
-          <text x="15" y="10" style={{ fontSize: "16px" }}>
+          <text x="15" y="10" fill="currentColor" style={{ fontSize: "16px" }}>
             {item.name}
           </text>
         </g>

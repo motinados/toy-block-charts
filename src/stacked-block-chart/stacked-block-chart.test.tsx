@@ -216,3 +216,118 @@ describe("StackedBlockChart with degenerate data", () => {
     ).toBe(true);
   });
 });
+
+describe("StackedBlockChart accessibility", () => {
+  it("exposes the chart as a single image to assistive technology", () => {
+    renderChart();
+
+    expect(screen.getByRole("img")).toBeInTheDocument();
+  });
+
+  it("names the chart with a default title", () => {
+    renderChart();
+
+    expect(
+      screen.getByRole("img", { name: "Stacked block chart" })
+    ).toBeInTheDocument();
+  });
+
+  it("names the chart with the given title", () => {
+    renderChart({ title: "Fruit sales" });
+
+    expect(screen.getByRole("img", { name: "Fruit sales" })).toBeInTheDocument();
+  });
+
+  // The accessible name resolves from <title> on its own, so this asserts the
+  // aria-labelledby wiring directly. It is belt and braces for the assistive
+  // technology that does not pick up a bare <title>.
+  it("points aria-labelledby at the rendered title", () => {
+    const { container } = renderChart({ title: "Fruit sales" });
+    const title = container.querySelector("svg > title");
+
+    expect(title).toHaveTextContent("Fruit sales");
+    expect(title?.id).toBeTruthy();
+    expect(container.querySelector("svg")).toHaveAttribute(
+      "aria-labelledby",
+      title?.id
+    );
+  });
+
+  it("describes the chart with the given desc", () => {
+    const { container } = renderChart({ desc: "Sales for the last quarter" });
+    const svg = container.querySelector("svg");
+    const desc = container.querySelector("svg > desc");
+
+    expect(desc).toHaveTextContent("Sales for the last quarter");
+    expect(svg).toHaveAttribute("aria-describedby", desc?.id);
+  });
+
+  it("renders no desc when none is given", () => {
+    const { container } = renderChart();
+
+    expect(container.querySelector("svg > desc")).toBeNull();
+    expect(container.querySelector("svg")).not.toHaveAttribute(
+      "aria-describedby"
+    );
+  });
+
+  it("leaves the chart unnamed when the title is empty", () => {
+    const { container } = renderChart({ title: "" });
+
+    expect(container.querySelector("svg > title")).toBeNull();
+    expect(container.querySelector("svg")).not.toHaveAttribute(
+      "aria-labelledby"
+    );
+  });
+
+  it("lets a caller's aria-label win over the generated title", () => {
+    const { container } = renderChart({ "aria-label": "Fruit sales" });
+
+    expect(screen.getByRole("img", { name: "Fruit sales" })).toBeInTheDocument();
+    expect(container.querySelector("svg > title")).toBeNull();
+    expect(container.querySelector("svg")).not.toHaveAttribute(
+      "aria-labelledby"
+    );
+  });
+
+  it("lets a caller's aria-labelledby win over the generated title", () => {
+    render(
+      <>
+        <span id="external-heading">Fruit sales</span>
+        <StackedBlockChart
+          stackType="stable-balanced"
+          data={data}
+          aria-labelledby="external-heading"
+        />
+      </>
+    );
+
+    expect(screen.getByRole("img", { name: "Fruit sales" })).toBeInTheDocument();
+  });
+
+  it("gives each block a native tooltip with its name and value", () => {
+    const { container } = renderChart();
+    const titles = Array.from(
+      container.querySelectorAll("rect > title"),
+      (title) => title.textContent
+    );
+
+    expect(titles).toEqual(["apple: 10", "banana: 20", "cherry: 30"]);
+  });
+
+  it("inherits the surrounding text color instead of hard coding black", () => {
+    const { container } = renderChart();
+
+    for (const text of container.querySelectorAll("text")) {
+      expect(text).toHaveAttribute("fill", "currentColor");
+    }
+  });
+
+  it("centers the data labels with dominant-baseline", () => {
+    const { container } = renderChart();
+    const label = container.querySelector("text");
+
+    expect(label).toHaveAttribute("dominant-baseline", "middle");
+    expect(label).not.toHaveAttribute("alignment-baseline");
+  });
+});
