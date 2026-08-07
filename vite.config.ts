@@ -22,7 +22,10 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      // Subpaths such as react/jsx-runtime have to be matched too, otherwise
+      // the JSX runtime of whichever React was installed at build time gets
+      // bundled into the library.
+      external: [/^react($|\/)/, /^react-dom($|\/)/],
     },
     sourcemap: true,
   },
