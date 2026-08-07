@@ -12,6 +12,14 @@ jobs:
   cache-and-install:
     runs-on: ubuntu-latest
 
+    # peerDependencies allows React 18 and 19, so both have to be exercised.
+    strategy:
+      fail-fast: false
+      matrix:
+        react: [18, 19]
+
+    name: react ${{ matrix.react }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,6 +38,14 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Use React ${{ matrix.react }}
+        run: >-
+          pnpm add -D
+          react@^${{ matrix.react }}
+          react-dom@^${{ matrix.react }}
+          @types/react@^${{ matrix.react }}
+          @types/react-dom@^${{ matrix.react }}
 
       - name: Build
         run: pnpm build
