@@ -1,5 +1,10 @@
 import { useMemo } from "react";
-import { unsafeUniformIntDistribution, xoroshiro128plus } from "pure-rand";
+import {
+  SVG_HEIGHT,
+  SVG_WIDTH,
+  LEGEND_WIDTH,
+} from "../../shared/model/geometry";
+import { createSeededRandomInt } from "../../shared/model/random";
 import {
   addXFluctuation,
   adjustSameValueBlocks,
@@ -20,10 +25,8 @@ import type {
   StackType,
 } from "./types";
 
-const SVG_WIDTH = 400;
-const SVG_HEIGHT = 300;
+/** How far left of the legend column the stack sits. */
 const BLOCKS_OFFSET_X = 40;
-const LEGEND_WIDTH = 100;
 
 type UseComputedBlocksResult = {
   blocks: BlockDatum[];
@@ -36,9 +39,9 @@ export function useComputedBlocks(
   seed: number
 ): UseComputedBlocksResult {
   return useMemo(() => {
-    const generator = xoroshiro128plus(seed);
-    const getRandomInt = (min: number, max: number) =>
-      unsafeUniformIntDistribution(min, max, generator);
+    // Built fresh on every recomputation so that a seed always yields the same
+    // chart; see createSeededRandomInt.
+    const getRandomInt = createSeededRandomInt(seed);
 
     const initialBlocks = filterDrawableData(data).map(createInitialBlockDatum);
     const total = initialBlocks.reduce((acc, d) => acc + d.value, 0);

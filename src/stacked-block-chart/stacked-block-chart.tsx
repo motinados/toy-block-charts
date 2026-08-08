@@ -1,9 +1,17 @@
 import { ComponentPropsWithRef, forwardRef, useId } from "react";
-import Block from "./components/block";
-import BlockLabels from "./components/block-labels";
-import Legend from "./components/legend";
+import Block from "../shared/components/block";
+import BlockLabels from "../shared/components/block-labels";
+import Legend from "../shared/components/legend";
 import type { StackedBlockDatum, StackType } from "./model/types";
 import { useComputedBlocks } from "./model/use-computed-blocks";
+import {
+  LEGEND_ITEM_HEIGHT,
+  LEGEND_PADDING_RIGHT,
+  LEGEND_PADDING_TOP,
+  LEGEND_WIDTH,
+  SVG_HEIGHT,
+  SVG_WIDTH,
+} from "../shared/model/geometry";
 
 export type { StackedBlockDatum, StackType } from "./model/types";
 
@@ -42,12 +50,6 @@ export const StackedBlockChart = forwardRef<
     }: StackedBlockChartProps,
     ref
   ) => {
-    const svgWidth = 400;
-    const svgHeight = 300;
-    const legendWidth = 100;
-    const legendItemHeight = 16;
-    const legendPaddingTop = 10;
-    const legendPaddingRight = 10;
     const { blocks, legendItems } = useComputedBlocks(data, stackType, seed);
 
     const id = useId();
@@ -68,7 +70,7 @@ export const StackedBlockChart = forwardRef<
         role="img"
         width={width}
         height={height}
-        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+        viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
         style={{
           width: "100%",
           height: "auto",
@@ -92,11 +94,11 @@ export const StackedBlockChart = forwardRef<
         {showDataLabels && <BlockLabels blocks={blocks} />}
         <Legend
           items={legendItems}
-          svgWidth={svgWidth}
-          width={legendWidth}
-          paddingRight={legendPaddingRight}
-          paddingTop={legendPaddingTop}
-          itemHeight={legendItemHeight}
+          svgWidth={SVG_WIDTH}
+          width={LEGEND_WIDTH}
+          paddingRight={LEGEND_PADDING_RIGHT}
+          paddingTop={LEGEND_PADDING_TOP}
+          itemHeight={LEGEND_ITEM_HEIGHT}
         />
       </svg>
     );

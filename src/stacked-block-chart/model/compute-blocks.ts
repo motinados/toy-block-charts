@@ -1,5 +1,6 @@
 import type { BlockDatum, StackedBlockDatum, StackType } from "./types";
-import { calcHeight, getOrderdRandomInt, shuffleArray } from "./utils";
+import { calcHeight } from "../../shared/model/geometry";
+import { getOrderdRandomInt, shuffleArray } from "../../shared/model/random";
 
 export type { BlockDatum } from "./types";
 
