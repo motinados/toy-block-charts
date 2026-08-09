@@ -14,7 +14,7 @@ import {
   filterDrawableData,
 } from "./compute-blocks";
 import type { StackedBlockDatum } from "./types";
-import { getRandomInt } from "./utils";
+import { getRandomInt } from "../../shared/model/random";
 
 describe("createInitialBlockDatum", () => {
   const mockRndFn = vi.fn();
