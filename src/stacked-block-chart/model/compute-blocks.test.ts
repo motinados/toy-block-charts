@@ -14,7 +14,7 @@ import {
   filterDrawableData,
 } from "./compute-blocks";
 import type { StackedBlockDatum } from "./types";
-import { getRandomInt } from "../../shared/model/random";
+import { createSeededRandomInt } from "../../shared/model/random";
 
 describe("createInitialBlockDatum", () => {
   const mockRndFn = vi.fn();
@@ -429,7 +429,7 @@ describe("createInitialBlockDatum", () => {
       },
     ];
 
-    const result = modifyOrderByType(blocks, "unstable-inverted", getRandomInt);
+    const result = modifyOrderByType(blocks, "unstable-inverted", createSeededRandomInt(42));
 
     expect(result).toEqual([
       {
@@ -499,7 +499,7 @@ describe("createInitialBlockDatum", () => {
       },
     ];
 
-    const result = modifyOrderByType(blocks, "shuffled", getRandomInt);
+    const result = modifyOrderByType(blocks, "shuffled", createSeededRandomInt(42));
 
     expect(result).toEqual(expect.arrayContaining(blocks));
   });
@@ -538,7 +538,7 @@ describe("createInitialBlockDatum", () => {
       },
     ];
 
-    const result = modifyOrderByType(blocks, "stable-balanced", getRandomInt);
+    const result = modifyOrderByType(blocks, "stable-balanced", createSeededRandomInt(42));
 
     expect(result).toEqual(blocks);
   });
