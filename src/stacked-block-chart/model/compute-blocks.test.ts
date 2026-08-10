@@ -9,11 +9,11 @@ import {
   modifyOrderByType,
   adjustTotalHeight,
   adjustSameValueBlocks,
-  defaultColor,
   addXFluctuation,
   filterDrawableData,
 } from "./compute-blocks";
 import type { StackedBlockDatum } from "./types";
+import { palette } from "../../shared/model/palette";
 import { createSeededRandomInt } from "../../shared/model/random";
 
 describe("createInitialBlockDatum", () => {
@@ -39,7 +39,7 @@ describe("createInitialBlockDatum", () => {
       fill: "#000",
     };
 
-    const result = createInitialBlockDatum(datum);
+    const result = createInitialBlockDatum(datum, 0);
 
     expect(result).toEqual({
       value: 10,
@@ -53,14 +53,14 @@ describe("createInitialBlockDatum", () => {
     });
   });
 
-  it("should add a random color if blockDatum does not have a fill", () => {
+  it("should take the palette colour for its index if it has no fill", () => {
     const block: StackedBlockDatum = {
       value: 10,
       name: "A",
       fill: "",
     };
 
-    const result = createInitialBlockDatum(block);
+    const result = createInitialBlockDatum(block, 0);
 
     expect(result).toEqual({
       value: 10,
@@ -69,7 +69,7 @@ describe("createInitialBlockDatum", () => {
       y: 0,
       width: 0,
       height: 0,
-      fill: defaultColor,
+      fill: palette[0],
       percentage: 0,
     });
   });
@@ -81,7 +81,7 @@ describe("createInitialBlockDatum", () => {
       fill: "#000",
     };
 
-    const result = createInitialBlockDatum(block);
+    const result = createInitialBlockDatum(block, 0);
     expect(result).toEqual({
       value: 10,
       name: "A",

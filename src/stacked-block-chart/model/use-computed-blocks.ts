@@ -43,7 +43,9 @@ export function useComputedBlocks(
     // chart; see createSeededRandomInt.
     const getRandomInt = createSeededRandomInt(seed);
 
-    const initialBlocks = filterDrawableData(data).map(createInitialBlockDatum);
+    const initialBlocks = filterDrawableData(data).map((datum, index) =>
+      createInitialBlockDatum(datum, index)
+    );
     const total = initialBlocks.reduce((acc, d) => acc + d.value, 0);
 
     // Every size in the pipeline is derived from a share of the total, so

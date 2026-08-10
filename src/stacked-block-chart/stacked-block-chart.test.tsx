@@ -6,6 +6,7 @@ import {
   type StackedBlockChartProps,
 } from "./stacked-block-chart";
 import type { StackedBlockDatum } from "./model/types";
+import { palette } from "../shared/model/palette";
 
 const data: StackedBlockDatum[] = [
   { value: 10, name: "apple" },
@@ -329,5 +330,70 @@ describe("StackedBlockChart accessibility", () => {
 
     expect(label).toHaveAttribute("dominant-baseline", "middle");
     expect(label).not.toHaveAttribute("alignment-baseline");
+  });
+});
+
+describe("StackedBlockChart colours", () => {
+  /** name -> fill, read off the per-block tooltip titles. */
+  function fillsByName(container: HTMLElement) {
+    const entries = Array.from(
+      container.querySelectorAll("rect > title"),
+      (title) => [
+        title.textContent?.split(":")[0] ?? "",
+        (title.parentElement as Element).getAttribute("fill") ?? "",
+      ]
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  }
+
+  it("gives data without a fill a distinct palette colour", () => {
+    const { container } = renderChart();
+    const fills = Object.values(fillsByName(container));
+
+    expect(fills).toHaveLength(data.length);
+    expect(new Set(fills).size).toBe(data.length);
+    for (const fill of fills) {
+      expect(palette).toContain(fill);
+    }
+  });
+
+  it("lets an explicit fill win over the palette", () => {
+    const { container } = renderChart({
+      data: [
+        { value: 10, name: "apple", fill: "#123456" },
+        { value: 20, name: "banana" },
+      ],
+    });
+
+    expect(fillsByName(container)).toEqual({
+      apple: "#123456",
+      banana: palette[1],
+    });
+  });
+
+  it("keeps a colour with its datum however the blocks are reordered", () => {
+    const stable = renderChart({ stackType: "stable-balanced" });
+    const stableFills = fillsByName(stable.container);
+    stable.unmount();
+
+    for (const stackType of ["unstable-inverted", "shuffled"] as const) {
+      const { container, unmount } = renderChart({ stackType });
+      expect(fillsByName(container)).toEqual(stableFills);
+      unmount();
+    }
+  });
+
+  it("starts the palette over when the data outgrows it", () => {
+    const many = Array.from({ length: palette.length + 2 }, (_, i) => ({
+      value: i + 1,
+      name: `item-${i}`,
+    }));
+
+    const { container } = renderChart({ data: many });
+    const fills = fillsByName(container);
+
+    expect(fills["item-0"]).toBe(palette[0]);
+    expect(fills[`item-${palette.length}`]).toBe(palette[0]);
+    expect(fills[`item-${palette.length + 1}`]).toBe(palette[1]);
   });
 });
