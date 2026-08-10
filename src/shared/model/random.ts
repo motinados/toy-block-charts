@@ -16,10 +16,6 @@ export function createSeededRandomInt(seed: number): RandomIntFn {
   return (min, max) => unsafeUniformIntDistribution(min, max, generator);
 }
 
-export function getRandomInt(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 // Generate multiple random numbers and return an array of them sorted in ascending order
 export function getOrderdRandomInt(
   min: number,
