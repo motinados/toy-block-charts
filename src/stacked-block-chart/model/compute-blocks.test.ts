@@ -13,7 +13,7 @@ import {
   filterDrawableData,
 } from "./compute-blocks";
 import type { StackedBlockDatum } from "./types";
-import { palette } from "../../shared/model/palette";
+import { defaultPalette } from "../../shared/model/palette";
 import { createSeededRandomInt } from "../../shared/model/random";
 
 describe("createInitialBlockDatum", () => {
@@ -69,7 +69,7 @@ describe("createInitialBlockDatum", () => {
       y: 0,
       width: 0,
       height: 0,
-      fill: palette[0],
+      fill: defaultPalette[0],
       percentage: 0,
     });
   });

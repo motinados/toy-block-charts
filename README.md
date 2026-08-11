@@ -93,25 +93,38 @@ Because `role="img"` makes the chart a leaf in the accessibility tree, a screen
 reader announces the name and description but not the individual values — use
 `desc` to summarise the data, or present the numbers alongside the chart.
 
-### Default palette
+### Palettes
 
-Data without an explicit `fill` is coloured from this palette, by its position
-in the `data` array. A colour therefore stays with its entry no matter how the
-layout reorders the blocks.
+Data without an explicit `fill` is coloured from a palette, by its position in
+the `data` array. A colour therefore stays with its entry no matter how the
+layout reorders the blocks, and colours repeat once the data outgrows the
+palette.
 
-| Slot | Hex | Slot | Hex |
-| --- | --- | --- | --- |
-| 1 | `#C08A00` | 5 | `#2F6B1F` |
-| 2 | `#3A54A8` | 6 | `#D2622E` |
-| 3 | `#C2417F` | 7 | `#7B3FA0` |
-| 4 | `#00879B` | 8 | `#C0392B` |
+Three palettes ship with the library. **Wooden Blocks** is the default.
 
-The order was chosen by validating candidate orderings rather than by eye:
-against a white background every slot clears a contrast ratio of 3:1 and is
-saturated enough not to read as grey, and the first five stay distinguishable
-from one another in every pairing, including under simulated colour-vision
-deficiency. Colours repeat past the eighth entry, so charts with more categories
-than that are better served by explicit `fill` values.
+| Palette | Colours |
+| --- | --- |
+| `woodenBlocks` (default) | `#C65D4B` `#D6A84B` `#6F8FAF` `#7D9A72` `#B9825A` `#8B728E` |
+| `toyClassic` | `#D94B4B` `#E9B949` `#4B78C2` `#5B9A68` `#E27A3F` `#8A67AB` |
+| `retroToy` | `#C04759` `#3B6C73` `#F1D87F` `#72936B` `#D9844A` `#7A668A` |
+
+To use one of the others, map it over your data:
+
+```tsx
+import { StackedBlockChart, toyClassic } from "toy-block-charts";
+
+const data = [
+  { name: "apple", value: 10 },
+  { name: "banana", value: 20 },
+].map((datum, i) => ({ ...datum, fill: toyClassic[i % toyClassic.length] }));
+```
+
+These palettes are warm and muted to match the toy-block look. That character
+has a cost worth knowing: several hues in each set sit close together, so colour
+alone will not always separate one block from another — particularly for readers
+with a colour-vision deficiency. The legend, the value labels and the per-block
+tooltip are what carry identity, so keep at least one of them on. Where two
+specific categories must be told apart at a glance, set their `fill` explicitly.
 
 ### Stable Balanced
 

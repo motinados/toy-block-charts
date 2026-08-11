@@ -6,7 +6,7 @@ import {
   type StackedBlockChartProps,
 } from "./stacked-block-chart";
 import type { StackedBlockDatum } from "./model/types";
-import { palette } from "../shared/model/palette";
+import { defaultPalette } from "../shared/model/palette";
 
 const data: StackedBlockDatum[] = [
   { value: 10, name: "apple" },
@@ -353,7 +353,7 @@ describe("StackedBlockChart colours", () => {
     expect(fills).toHaveLength(data.length);
     expect(new Set(fills).size).toBe(data.length);
     for (const fill of fills) {
-      expect(palette).toContain(fill);
+      expect(defaultPalette).toContain(fill);
     }
   });
 
@@ -367,7 +367,7 @@ describe("StackedBlockChart colours", () => {
 
     expect(fillsByName(container)).toEqual({
       apple: "#123456",
-      banana: palette[1],
+      banana: defaultPalette[1],
     });
   });
 
@@ -384,7 +384,7 @@ describe("StackedBlockChart colours", () => {
   });
 
   it("starts the palette over when the data outgrows it", () => {
-    const many = Array.from({ length: palette.length + 2 }, (_, i) => ({
+    const many = Array.from({ length: defaultPalette.length + 2 }, (_, i) => ({
       value: i + 1,
       name: `item-${i}`,
     }));
@@ -392,8 +392,8 @@ describe("StackedBlockChart colours", () => {
     const { container } = renderChart({ data: many });
     const fills = fillsByName(container);
 
-    expect(fills["item-0"]).toBe(palette[0]);
-    expect(fills[`item-${palette.length}`]).toBe(palette[0]);
-    expect(fills[`item-${palette.length + 1}`]).toBe(palette[1]);
+    expect(fills["item-0"]).toBe(defaultPalette[0]);
+    expect(fills[`item-${defaultPalette.length}`]).toBe(defaultPalette[0]);
+    expect(fills[`item-${defaultPalette.length + 1}`]).toBe(defaultPalette[1]);
   });
 });
