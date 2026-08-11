@@ -1,10 +1,9 @@
 import type { BlockDatum, StackedBlockDatum, StackType } from "./types";
 import { calcHeight } from "../../shared/model/geometry";
+import { paletteColorAt } from "../../shared/model/palette";
 import { getOrderdRandomInt, shuffleArray } from "../../shared/model/random";
 
 export type { BlockDatum } from "./types";
-
-export const defaultColor = "#808080";
 
 /**
  * Keep only the data that can be drawn as an area.
@@ -20,8 +19,16 @@ export function filterDrawableData(
   );
 }
 
-/** Create initial BlockDatum */
-export function createInitialBlockDatum(datum: StackedBlockDatum): BlockDatum {
+/**
+ * Create initial BlockDatum.
+ * Data without a fill of its own takes the palette colour for its position in
+ * the caller's array, so a colour stays with its entry however the blocks are
+ * later reordered.
+ */
+export function createInitialBlockDatum(
+  datum: StackedBlockDatum,
+  index: number
+): BlockDatum {
   return {
     value: datum.value,
     name: datum.name,
@@ -29,7 +36,7 @@ export function createInitialBlockDatum(datum: StackedBlockDatum): BlockDatum {
     y: 0,
     width: 0,
     height: 0,
-    fill: datum.fill || defaultColor,
+    fill: datum.fill || paletteColorAt(index),
     percentage: 0,
   };
 }
