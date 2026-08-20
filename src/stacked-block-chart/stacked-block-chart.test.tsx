@@ -5,8 +5,9 @@ import {
   StackedBlockChart,
   type StackedBlockChartProps,
 } from "./stacked-block-chart";
-import type { StackedBlockDatum } from "./model/types";
+import type { StackedBlockDatum, StackType } from "./model/types";
 import { defaultPalette, retroToy } from "../shared/model/palette";
+import { SVG_HEIGHT } from "../shared/model/geometry";
 
 const data: StackedBlockDatum[] = [
   { value: 10, name: "apple" },
@@ -448,5 +449,111 @@ describe("StackedBlockChart colours", () => {
     const { container } = renderChart({ palette: retroToy });
 
     expect(container.querySelector("svg")).not.toHaveAttribute("palette");
+  });
+});
+
+/**
+ * Regression tests for #33, where the blocks were drawn on top of one another
+ * instead of stacked. The layout used to take the whole overflow out of a single
+ * block, which could turn its height negative; once the reordering moved that
+ * block into the middle of the stack, the running y went backwards and the
+ * blocks below it rode up over their neighbour.
+ */
+describe("StackedBlockChart stacking", () => {
+  // The stack is laid out in floating point, so exact edges are not expected.
+  const epsilon = 1e-9;
+  const stackTypes: StackType[] = [
+    "stable-balanced",
+    "unstable-inverted",
+    "shuffled",
+  ];
+
+  // Only the blocks carry a <title>; the legend swatches are bare rects.
+  function blockBoxesOf(container: HTMLElement) {
+    return rectsOf(container)
+      .filter((rect) => rect.querySelector("title") !== null)
+      .map((rect) => ({
+        y: Number(rect.getAttribute("y")),
+        height: Number(rect.getAttribute("height")),
+      }));
+  }
+
+  function expectStacked(container: HTMLElement, expectedCount: number) {
+    const boxes = blockBoxesOf(container);
+
+    expect(boxes).toHaveLength(expectedCount);
+    boxes.forEach((box, index) => {
+      expect(box.height).toBeGreaterThanOrEqual(0);
+      expect(box.y).toBeGreaterThanOrEqual(-epsilon);
+      expect(box.y + box.height).toBeLessThanOrEqual(SVG_HEIGHT + epsilon);
+
+      if (index === 0) {
+        return;
+      }
+      const above = boxes[index - 1];
+      expect(box.y).toBeGreaterThanOrEqual(above.y + above.height - epsilon);
+    });
+  }
+
+  it("draws every block below the one before it", () => {
+    const datasets: StackedBlockDatum[][] = [
+      data,
+      [{ value: 5, name: "solo" }],
+      [
+        { value: 1, name: "a" },
+        { value: 1, name: "b" },
+        { value: 1, name: "c" },
+      ],
+      [
+        { value: 1, name: "tiny" },
+        { value: 900, name: "huge" },
+      ],
+      [
+        { value: 3, name: "a" },
+        { value: 8, name: "b" },
+        { value: 13, name: "c" },
+        { value: 21, name: "d" },
+        { value: 34, name: "e" },
+        { value: 55, name: "f" },
+      ],
+    ];
+
+    for (const stackType of stackTypes) {
+      for (let seed = 0; seed < 20; seed++) {
+        for (const dataset of datasets) {
+          const { container, unmount } = render(
+            <StackedBlockChart
+              stackType={stackType}
+              data={dataset}
+              seed={seed}
+            />
+          );
+
+          expectStacked(container, dataset.length);
+          unmount();
+        }
+      }
+    }
+  });
+
+  it("keeps the blocks stacked when the stack overflows the canvas", () => {
+    // This pair overflowed the canvas at the default seed and used to leave the
+    // last block with a non-positive height.
+    const overflowing: StackedBlockDatum[] = [
+      { value: 20, name: "a" },
+      { value: 21, name: "b" },
+    ];
+
+    for (const stackType of stackTypes) {
+      const { container, unmount } = render(
+        <StackedBlockChart stackType={stackType} data={overflowing} />
+      );
+
+      expectStacked(container, overflowing.length);
+      for (const box of blockBoxesOf(container)) {
+        expect(box.height).toBeGreaterThan(0);
+      }
+      unmount();
+    }
   });
 });
