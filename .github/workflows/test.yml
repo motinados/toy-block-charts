@@ -1,4 +1,4 @@
-name: pnpm build and test
+name: pnpm build, test, and lint
 
 on:
   push:
@@ -9,7 +9,33 @@ on:
       - "main"
 
 jobs:
-  cache-and-install:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+  build-and-test:
     runs-on: ubuntu-latest
 
     # peerDependencies allows React 18 and 19, so both have to be exercised.
@@ -18,7 +44,7 @@ jobs:
       matrix:
         react: [18, 19]
 
-    name: react ${{ matrix.react }}
+    name: Build and test (React ${{ matrix.react }})
 
     steps:
       - name: Checkout
