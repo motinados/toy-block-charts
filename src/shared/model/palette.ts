@@ -44,10 +44,15 @@ export const defaultPalette: readonly string[] = woodenBlocks;
 
 /**
  * The fill for the nth datum, repeating once the data outgrows the palette.
+ *
+ * A palette can reach here from a caller, so an empty one has to mean something:
+ * it has no colour to give, and falling back to the default keeps every block
+ * drawable rather than leaving it without a fill.
  */
 export function paletteColorAt(
   index: number,
   palette: readonly string[] = defaultPalette
 ): string {
-  return palette[index % palette.length];
+  const colors = palette.length > 0 ? palette : defaultPalette;
+  return colors[index % colors.length];
 }

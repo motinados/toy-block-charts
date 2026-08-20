@@ -13,7 +13,7 @@ import {
   filterDrawableData,
 } from "./compute-blocks";
 import type { StackedBlockDatum } from "./types";
-import { defaultPalette } from "../../shared/model/palette";
+import { defaultPalette, toyClassic } from "../../shared/model/palette";
 import { createSeededRandomInt } from "../../shared/model/random";
 
 describe("createInitialBlockDatum", () => {
@@ -72,6 +72,27 @@ describe("createInitialBlockDatum", () => {
       fill: defaultPalette[0],
       percentage: 0,
     });
+  });
+
+  it("should take the colour from the given palette when one is passed", () => {
+    const block: StackedBlockDatum = {
+      value: 10,
+      name: "A",
+    };
+
+    expect(createInitialBlockDatum(block, 1, toyClassic).fill).toBe(
+      toyClassic[1]
+    );
+  });
+
+  it("should let an explicit fill win over the given palette", () => {
+    const block: StackedBlockDatum = {
+      value: 10,
+      name: "A",
+      fill: "#000",
+    };
+
+    expect(createInitialBlockDatum(block, 0, toyClassic).fill).toBe("#000");
   });
 
   it("should not modify blockDatum if it already has a fill", () => {

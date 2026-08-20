@@ -79,6 +79,7 @@ on — is passed straight through, and `ref` is forwarded to the `<svg>` element
 | `data` | Yes | `{ name: string; value: number; fill?: string }[]` | - | Input data for each block segment. Blocks are sized by area, so entries whose `value` is negative or not a finite number are dropped, and a `value` of `0` keeps its legend entry while drawing nothing. If `fill` is omitted the block takes its colour from the palette below. |
 | `seed` | No | `number` | `42` | Seed for the randomised layout. The same data and seed always render the same chart. |
 | `showDataLabels` | No | `boolean` | `true` | Whether to render value labels beside the blocks. |
+| `palette` | No | `readonly string[]` | `woodenBlocks` | Colours for data that has no `fill` of its own. A colour is taken by the entry's position in `data`, and the palette starts over once the data outgrows it. An empty array falls back to the default palette. |
 | `title` | No | `string` | `"Stacked block chart"` | Accessible name, rendered as `<title>`. Pass `""` to leave the chart unnamed; passing your own `aria-label` or `aria-labelledby` takes precedence over it. |
 | `desc` | No | `string` | `undefined` | Longer description, rendered as `<desc>` and referenced by `aria-describedby`. |
 | `width` / `height` | No | `ComponentPropsWithRef<"svg">["width"]` / `ComponentPropsWithRef<"svg">["height"]` | `undefined` | SVG size options. They are passed to the `<svg>` `width`/`height` attributes, while `viewBox="0 0 400 300"` is fixed. When specified, they also constrain responsive rendering via `maxWidth` / `maxHeight` styles. |
@@ -108,16 +109,22 @@ Three palettes ship with the library. **Wooden Blocks** is the default.
 | `toyClassic` | `#D94B4B` `#E9B949` `#4B78C2` `#5B9A68` `#E27A3F` `#8A67AB` |
 | `retroToy` | `#C04759` `#3B6C73` `#F1D87F` `#72936B` `#D9844A` `#7A668A` |
 
-To use one of the others, map it over your data:
+To use one of the others, or a palette of your own, pass it as `palette`:
 
 ```tsx
 import { StackedBlockChart, toyClassic } from "toy-block-charts";
 
-const data = [
-  { name: "apple", value: 10 },
-  { name: "banana", value: 20 },
-].map((datum, i) => ({ ...datum, fill: toyClassic[i % toyClassic.length] }));
+<StackedBlockChart
+  stackType="stable-balanced"
+  data={[
+    { name: "apple", value: 10 },
+    { name: "banana", value: 20 },
+  ]}
+  palette={toyClassic}
+/>;
 ```
+
+An entry that carries its own `fill` keeps it, whatever `palette` says.
 
 These palettes are warm and muted to match the toy-block look. That character
 has a cost worth knowing: several hues in each set sit close together, so colour
