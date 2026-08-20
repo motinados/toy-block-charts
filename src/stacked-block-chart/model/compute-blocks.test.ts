@@ -202,6 +202,31 @@ describe("createInitialBlockDatum", () => {
     ]);
   });
 
+  /**
+   * Regression test for #33: a block whose height dragged prevY backwards used
+   * to let the blocks after it ride up over their neighbour. Stacking only holds
+   * while every y sits exactly on the bottom edge of the block before it.
+   */
+  it("should leave no gap or overlap between neighbouring blocks", () => {
+    const blocks: BlockDatum[] = [12.5, 0, 40, 7.25].map((height, index) => ({
+      value: index,
+      name: `block-${index}`,
+      x: 0,
+      y: 0,
+      width: 10,
+      height,
+      fill: "#000",
+      percentage: 0,
+    }));
+
+    const result = calcYPositions(blocks);
+
+    expect(result[0].y).toBe(0);
+    for (let i = 1; i < result.length; i++) {
+      expect(result[i].y).toBe(result[i - 1].y + result[i - 1].height);
+    }
+  });
+
   it("should calculate the X position of blocks correctly", () => {
     const blocks: BlockDatum[] = [
       {
