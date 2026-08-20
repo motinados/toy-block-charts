@@ -36,7 +36,8 @@ type UseComputedBlocksResult = {
 export function useComputedBlocks(
   data: StackedBlockDatum[],
   stackType: StackType,
-  seed: number
+  seed: number,
+  palette?: readonly string[]
 ): UseComputedBlocksResult {
   return useMemo(() => {
     // Built fresh on every recomputation so that a seed always yields the same
@@ -44,7 +45,7 @@ export function useComputedBlocks(
     const getRandomInt = createSeededRandomInt(seed);
 
     const initialBlocks = filterDrawableData(data).map((datum, index) =>
-      createInitialBlockDatum(datum, index)
+      createInitialBlockDatum(datum, index, palette)
     );
     const total = initialBlocks.reduce((acc, d) => acc + d.value, 0);
 
@@ -74,5 +75,5 @@ export function useComputedBlocks(
       blocks: computed,
       legendItems: computed.map((d) => ({ name: d.name, color: d.fill })),
     };
-  }, [data, stackType, seed]);
+  }, [data, stackType, seed, palette]);
 }

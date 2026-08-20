@@ -23,11 +23,13 @@ export function filterDrawableData(
  * Create initial BlockDatum.
  * Data without a fill of its own takes the palette colour for its position in
  * the caller's array, so a colour stays with its entry however the blocks are
- * later reordered.
+ * later reordered. Omitting `palette` leaves the choice of default to
+ * paletteColorAt.
  */
 export function createInitialBlockDatum(
   datum: StackedBlockDatum,
-  index: number
+  index: number,
+  palette?: readonly string[]
 ): BlockDatum {
   return {
     value: datum.value,
@@ -36,7 +38,7 @@ export function createInitialBlockDatum(
     y: 0,
     width: 0,
     height: 0,
-    fill: datum.fill || paletteColorAt(index),
+    fill: datum.fill || paletteColorAt(index, palette),
     percentage: 0,
   };
 }

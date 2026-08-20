@@ -6,7 +6,7 @@ import {
   type StackedBlockChartProps,
 } from "./stacked-block-chart";
 import type { StackedBlockDatum } from "./model/types";
-import { defaultPalette } from "../shared/model/palette";
+import { defaultPalette, retroToy } from "../shared/model/palette";
 
 const data: StackedBlockDatum[] = [
   { value: 10, name: "apple" },
@@ -395,5 +395,58 @@ describe("StackedBlockChart colours", () => {
     expect(fills["item-0"]).toBe(defaultPalette[0]);
     expect(fills[`item-${defaultPalette.length}`]).toBe(defaultPalette[0]);
     expect(fills[`item-${defaultPalette.length + 1}`]).toBe(defaultPalette[1]);
+  });
+
+  it("colours from the palette it is given", () => {
+    const { container } = renderChart({ palette: retroToy });
+
+    expect(fillsByName(container)).toEqual({
+      apple: retroToy[0],
+      banana: retroToy[1],
+      cherry: retroToy[2],
+    });
+  });
+
+  it("starts a given palette over when the data outgrows it", () => {
+    const many = Array.from({ length: retroToy.length + 1 }, (_, i) => ({
+      value: i + 1,
+      name: `item-${i}`,
+    }));
+
+    const { container } = renderChart({ data: many, palette: retroToy });
+    const fills = fillsByName(container);
+
+    expect(fills[`item-${retroToy.length}`]).toBe(retroToy[0]);
+  });
+
+  it("still lets an explicit fill win over a given palette", () => {
+    const { container } = renderChart({
+      data: [
+        { value: 10, name: "apple", fill: "#123456" },
+        { value: 20, name: "banana" },
+      ],
+      palette: retroToy,
+    });
+
+    expect(fillsByName(container)).toEqual({
+      apple: "#123456",
+      banana: retroToy[1],
+    });
+  });
+
+  it("falls back to the default palette when given an empty one", () => {
+    const { container } = renderChart({ palette: [] });
+
+    expect(fillsByName(container)).toEqual({
+      apple: defaultPalette[0],
+      banana: defaultPalette[1],
+      cherry: defaultPalette[2],
+    });
+  });
+
+  it("does not pass the palette on to the svg element", () => {
+    const { container } = renderChart({ palette: retroToy });
+
+    expect(container.querySelector("svg")).not.toHaveAttribute("palette");
   });
 });

@@ -25,6 +25,11 @@ describe("paletteColorAt", () => {
       toyClassic[1]
     );
   });
+
+  it("should fall back to the default palette when the given one is empty", () => {
+    expect(paletteColorAt(0, [])).toBe(defaultPalette[0]);
+    expect(paletteColorAt(1, [])).toBe(defaultPalette[1]);
+  });
 });
 
 describe("palettes", () => {

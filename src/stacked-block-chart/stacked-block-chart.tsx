@@ -23,6 +23,12 @@ export type StackedBlockChartProps = ComponentPropsWithRef<"svg"> & {
   seed?: number;
   showDataLabels?: boolean;
   /**
+   * The palette used for data that carries no `fill` of its own. A colour is
+   * taken by the datum's position in `data` and the palette starts over once
+   * the data outgrows it.
+   */
+  palette?: readonly string[];
+  /**
    * The accessible name of the chart, rendered as <title>.
    * Pass an empty string to leave the chart unnamed.
    */
@@ -41,6 +47,7 @@ export const StackedBlockChart = forwardRef<
       data,
       seed = 42,
       showDataLabels = true,
+      palette,
       title = defaultTitle,
       desc,
       width,
@@ -50,7 +57,12 @@ export const StackedBlockChart = forwardRef<
     }: StackedBlockChartProps,
     ref
   ) => {
-    const { blocks, legendItems } = useComputedBlocks(data, stackType, seed);
+    const { blocks, legendItems } = useComputedBlocks(
+      data,
+      stackType,
+      seed,
+      palette
+    );
 
     const id = useId();
     const titleId = `${id}-title`;

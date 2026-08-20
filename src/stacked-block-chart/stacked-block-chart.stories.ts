@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StackedBlockChart } from "./stacked-block-chart";
+import { toyClassic } from "../shared/model/palette";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -65,6 +66,20 @@ export const WithoutSettingFills: Story = {
       { value: 40, name: "date" },
       { value: 50, name: "elderberry" },
     ],
+  },
+};
+
+export const WithPalette: Story = {
+  args: {
+    stackType: "stable-balanced",
+    data: [
+      { value: 10, name: "apple" },
+      { value: 20, name: "banana" },
+      { value: 30, name: "cherry" },
+      { value: 40, name: "date" },
+      { value: 50, name: "elderberry" },
+    ],
+    palette: toyClassic,
   },
 };
 
