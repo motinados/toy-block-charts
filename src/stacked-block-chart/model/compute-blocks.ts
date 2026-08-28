@@ -3,8 +3,6 @@ import { calcHeight } from "../../shared/model/geometry";
 import { paletteColorAt } from "../../shared/model/palette";
 import { getOrderdRandomInt, shuffleArray } from "../../shared/model/random";
 
-export type { BlockDatum } from "./types";
-
 /**
  * Keep only the data that can be drawn as an area.
  * Blocks are sized by area, so a value that is not a finite number has no size
@@ -217,7 +215,7 @@ export function addXFluctuation(
   }, []);
 }
 
-//Align BlockItem to the bottom of the svg based on svgHeight
+//Align blocks to the bottom of the svg based on svgHeight
 export function alignToBottom(
   blocks: BlockDatum[],
   svgHeight: number

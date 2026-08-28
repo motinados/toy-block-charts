@@ -1,5 +1,7 @@
+import type { LegendItem } from "../model/types";
+
 type LegendProps = {
-  items: { name: string; color: string }[];
+  items: LegendItem[];
   /** svgWidth is the width of the parent element. */
   svgWidth: number;
   /** width is the width of the legend. */

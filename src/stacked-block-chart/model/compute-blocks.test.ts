@@ -1,6 +1,5 @@
 import { describe, beforeEach, it, expect, vi } from "vitest";
 import {
-  BlockDatum,
   calcYPositions,
   calcPercentage,
   createInitialBlockDatum,
@@ -12,7 +11,7 @@ import {
   addXFluctuation,
   filterDrawableData,
 } from "./compute-blocks";
-import type { StackedBlockDatum } from "./types";
+import type { BlockDatum, StackedBlockDatum } from "./types";
 import { defaultPalette, toyClassic } from "../../shared/model/palette";
 import { createSeededRandomInt } from "../../shared/model/random";
 
