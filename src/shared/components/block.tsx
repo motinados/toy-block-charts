@@ -1,14 +1,8 @@
-type Props = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  value: number;
-  name: string;
-  fill: string;
-};
+import type { BlockDatum } from "../model/types";
 
-export type BlockItem = Props;
+/** A block only needs its geometry and identity to be drawn; `percentage` is
+ * layout bookkeeping that never reaches the DOM. */
+type Props = Omit<BlockDatum, "percentage">;
 
 export default function Block({
   x,

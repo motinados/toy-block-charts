@@ -1,4 +1,4 @@
-import { BlockItem } from "./block";
+import type { BlockDatum } from "../model/types";
 
 type BlockLabel = {
   x: number;
@@ -7,7 +7,7 @@ type BlockLabel = {
 };
 
 export type BlockLabelsProps = {
-  blocks: BlockItem[];
+  blocks: BlockDatum[];
 };
 
 export default function BlockLabels({ blocks }: BlockLabelsProps) {
