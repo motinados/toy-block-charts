@@ -3,6 +3,11 @@ import { calcHeight } from "../../shared/model/geometry";
 import { paletteColorAt } from "../../shared/model/palette";
 import { getOrderdRandomInt, shuffleArray } from "../../shared/model/random";
 
+/** The vertical space a stack of blocks occupies. */
+function sumHeight(blocks: BlockDatum[]): number {
+  return blocks.reduce((acc, block) => acc + block.height, 0);
+}
+
 /**
  * Keep only the data that can be drawn as an area.
  * Blocks are sized by area, so a value that is not a finite number has no size
@@ -110,7 +115,7 @@ export function adjustTotalHeight(
   data: BlockDatum[],
   maxHeight: number
 ): BlockDatum[] {
-  const totalHeight = data.reduce((acc, d) => acc + d.height, 0);
+  const totalHeight = sumHeight(data);
   if (totalHeight <= maxHeight) {
     return data;
   }
@@ -141,17 +146,12 @@ export function modifyOrderByType(
  * Set Y to stack blocks
  */
 export function calcYPositions(blocks: BlockDatum[]): BlockDatum[] {
-  const resultBlocks: BlockDatum[] = [];
-  let prevY = 0;
-  for (const block of blocks) {
-    const newBlock = { ...block };
-
-    newBlock.y = prevY;
-    prevY += block.height;
-
-    resultBlocks.push(newBlock);
-  }
-  return resultBlocks;
+  let nextY = 0;
+  return blocks.map((block) => {
+    const positioned = { ...block, y: nextY };
+    nextY += block.height;
+    return positioned;
+  });
 }
 
 /**
@@ -161,15 +161,10 @@ export function calcXPositions(
   blocks: BlockDatum[],
   svgCenterX: number
 ): BlockDatum[] {
-  const resultBlocks: BlockDatum[] = [];
-  for (const block of blocks) {
-    const newBlock = { ...block };
-
-    newBlock.x = svgCenterX - block.width / 2;
-
-    resultBlocks.push(newBlock);
-  }
-  return resultBlocks;
+  return blocks.map((block) => ({
+    ...block,
+    x: svgCenterX - block.width / 2,
+  }));
 }
 
 /**
@@ -220,15 +215,6 @@ export function alignToBottom(
   blocks: BlockDatum[],
   svgHeight: number
 ): BlockDatum[] {
-  const resultBlocks: BlockDatum[] = [];
-  const blocksHeight = blocks.reduce((acc, block) => acc + block.height, 0);
-  const diff = svgHeight - blocksHeight;
-
-  for (const block of blocks) {
-    const newBlock = { ...block };
-    newBlock.y += diff;
-    resultBlocks.push(newBlock);
-  }
-
-  return resultBlocks;
+  const diff = svgHeight - sumHeight(blocks);
+  return blocks.map((block) => ({ ...block, y: block.y + diff }));
 }
