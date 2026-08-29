@@ -59,7 +59,7 @@ export function useComputedBlocks(
 
     const ops: ((b: BlockDatum[]) => BlockDatum[])[] = [
       (b) => b.map((datum) => calcPercentage(datum, total)),
-      (b) => b.sort((a, b) => a.percentage - b.percentage),
+      (b) => [...b].sort((a, b) => a.percentage - b.percentage),
       (b) => calcWidthsAndHeights(b, getRandomInt, { multiple: 100 }),
       (b) => adjustSameValueBlocks(b),
       (b) => adjustTotalHeight(b, SVG_HEIGHT),
