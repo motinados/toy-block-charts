@@ -134,12 +134,21 @@ export function modifyOrderByType(
   type: StackType,
   rndFn: (min: number, max: number) => number
 ): BlockDatum[] {
-  if (type === "unstable-inverted") {
-    return blocks.reverse();
-  } else if (type === "shuffled") {
-    return shuffleArray(blocks, rndFn);
+  switch (type) {
+    case "unstable-inverted":
+      // reverse() would reorder the caller's own array, so copy first.
+      return [...blocks].reverse();
+    case "shuffled":
+      return shuffleArray(blocks, rndFn);
+    case "stable-balanced":
+      return blocks;
+    default: {
+      // A new StackType has to be handled here rather than falling through to
+      // the stable-balanced layout unnoticed.
+      const exhaustive: never = type;
+      return exhaustive;
+    }
   }
-  return blocks;
 }
 
 /**

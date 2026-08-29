@@ -588,6 +588,45 @@ describe("createInitialBlockDatum", () => {
     expect(result).toEqual(blocks);
   });
 
+  it("should not modify the given array", () => {
+    const blocks: BlockDatum[] = [
+      {
+        value: 10,
+        name: "A",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 20,
+        name: "B",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+      {
+        value: 30,
+        name: "C",
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: "",
+        percentage: 0,
+      },
+    ];
+
+    modifyOrderByType(blocks, "unstable-inverted", createSeededRandomInt(42));
+
+    expect(blocks.map((block) => block.name)).toEqual(["A", "B", "C"]);
+  });
+
   it("should return the original data if total height is less than or equal to maxHeight", () => {
     const data: BlockDatum[] = [
       {
