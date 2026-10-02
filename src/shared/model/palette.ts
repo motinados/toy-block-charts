@@ -4,12 +4,31 @@
  * A colour is taken by the datum's position in the caller's `data` array, so it
  * stays with that entry however the layout reorders the blocks, and colours
  * start over once the data outgrows the palette.
+ */
+
+/**
+ * Saturated primaries, like a box of plastic bricks, and the default.
  *
- * These are warm, muted sets chosen to match the toy-block look. That character
- * comes at a cost worth knowing about: several of the hues sit close together,
- * so colour alone does not reliably separate every pair — the legend, the value
- * labels and the per-block tooltip are what carry identity. For charts with many
- * categories, or where readers must tell two specific series apart, pass
+ * The colours differ in lightness as well as hue, so every pair stays
+ * apart under simulated protanopia, deuteranopia and tritanopia too. Colour is
+ * still not the only cue a reader should get: the legend, the value labels and
+ * the per-block tooltip are what carry identity once the data outgrows the six
+ * colours and they repeat.
+ */
+export const brightBricks = [
+  "#D62828",
+  "#FFC21A",
+  "#1D63D6",
+  "#3BB273",
+  "#4CC9F0",
+  "#6A2C91",
+] as const;
+
+/**
+ * The palettes below are warm and muted. That character comes at a cost worth
+ * knowing about: several of the hues sit close together, so colour alone does
+ * not reliably separate every pair. For charts with many categories, or where
+ * readers must tell two specific series apart, prefer `brightBricks` or pass
  * explicit `fill` values.
  */
 export const woodenBlocks = [
@@ -40,7 +59,7 @@ export const retroToy = [
 ] as const;
 
 /** The palette used when a datum has no `fill` of its own. */
-export const defaultPalette: readonly string[] = woodenBlocks;
+export const defaultPalette: readonly string[] = brightBricks;
 
 /**
  * The fill for the nth datum, repeating once the data outgrows the palette.

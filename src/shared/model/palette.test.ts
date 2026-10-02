@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  brightBricks,
   defaultPalette,
   paletteColorAt,
   retroToy,
@@ -33,11 +34,12 @@ describe("paletteColorAt", () => {
 });
 
 describe("palettes", () => {
-  it("should default to Wooden Blocks", () => {
-    expect(defaultPalette).toEqual(woodenBlocks);
+  it("should default to Bright Bricks", () => {
+    expect(defaultPalette).toEqual(brightBricks);
   });
 
   it.each([
+    ["brightBricks", brightBricks],
     ["woodenBlocks", woodenBlocks],
     ["toyClassic", toyClassic],
     ["retroToy", retroToy],

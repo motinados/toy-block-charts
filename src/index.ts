@@ -6,6 +6,7 @@ export {
 } from "./stacked-block-chart/stacked-block-chart";
 
 export {
+  brightBricks,
   defaultPalette,
   retroToy,
   toyClassic,
