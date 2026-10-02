@@ -79,7 +79,7 @@ on — is passed straight through, and `ref` is forwarded to the `<svg>` element
 | `data` | Yes | `{ name: string; value: number; fill?: string }[]` | - | Input data for each block segment. Blocks are sized by area, so entries whose `value` is negative or not a finite number are dropped, and a `value` of `0` keeps its legend entry while drawing nothing. If `fill` is omitted the block takes its colour from the palette below. |
 | `seed` | No | `number` | `42` | Seed for the randomised layout. The same data and seed always render the same chart. |
 | `showDataLabels` | No | `boolean` | `true` | Whether to render value labels beside the blocks. |
-| `palette` | No | `readonly string[]` | `woodenBlocks` | Colours for data that has no `fill` of its own. A colour is taken by the entry's position in `data`, and the palette starts over once the data outgrows it. An empty array falls back to the default palette. |
+| `palette` | No | `readonly string[]` | `brightBricks` | Colours for data that has no `fill` of its own. A colour is taken by the entry's position in `data`, and the palette starts over once the data outgrows it. An empty array falls back to the default palette. |
 | `title` | No | `string` | `"Stacked block chart"` | Accessible name, rendered as `<title>`. Pass `""` to leave the chart unnamed; passing your own `aria-label` or `aria-labelledby` takes precedence over it. |
 | `desc` | No | `string` | `undefined` | Longer description, rendered as `<desc>` and referenced by `aria-describedby`. |
 | `width` / `height` | No | `ComponentPropsWithRef<"svg">["width"]` / `ComponentPropsWithRef<"svg">["height"]` | `undefined` | SVG size options. They are passed to the `<svg>` `width`/`height` attributes, while `viewBox="0 0 400 300"` is fixed. When specified, they also constrain responsive rendering via `maxWidth` / `maxHeight` styles. |
@@ -101,11 +101,12 @@ the `data` array. A colour therefore stays with its entry no matter how the
 layout reorders the blocks, and colours repeat once the data outgrows the
 palette.
 
-Three palettes ship with the library. **Wooden Blocks** is the default.
+Four palettes ship with the library. **Bright Bricks** is the default.
 
 | Palette | Colours |
 | --- | --- |
-| `woodenBlocks` (default) | `#C65D4B` `#D6A84B` `#6F8FAF` `#7D9A72` `#B9825A` `#8B728E` |
+| `brightBricks` (default) | `#D62828` `#FFC21A` `#1D63D6` `#3BB273` `#4CC9F0` `#6A2C91` |
+| `woodenBlocks` | `#C65D4B` `#D6A84B` `#6F8FAF` `#7D9A72` `#B9825A` `#8B728E` |
 | `toyClassic` | `#D94B4B` `#E9B949` `#4B78C2` `#5B9A68` `#E27A3F` `#8A67AB` |
 | `retroToy` | `#C04759` `#3B6C73` `#F1D87F` `#72936B` `#D9844A` `#7A668A` |
 
@@ -126,12 +127,22 @@ import { StackedBlockChart, toyClassic } from "toy-block-charts";
 
 An entry that carries its own `fill` keeps it, whatever `palette` says.
 
-These palettes are warm and muted to match the toy-block look. That character
-has a cost worth knowing: several hues in each set sit close together, so colour
-alone will not always separate one block from another — particularly for readers
-with a colour-vision deficiency. The legend, the value labels and the per-block
-tooltip are what carry identity, so keep at least one of them on. Where two
-specific categories must be told apart at a glance, set their `fill` explicitly.
+Earlier versions defaulted to `woodenBlocks`. Pass `palette={woodenBlocks}` to
+keep that look.
+
+**Bright Bricks** uses saturated primaries, like a box of plastic bricks. Its
+colours differ in lightness as well as hue, so every pair stays apart for
+readers with a colour-vision deficiency too.
+
+The other three are warm and muted. That character has a cost worth knowing:
+several hues in each set sit close together, so colour alone will not always
+separate one block from another — particularly for readers with a colour-vision
+deficiency. Use them for their look, and set `fill` explicitly where two
+specific categories must be told apart at a glance.
+
+Whatever the palette, colours repeat once the data has more than six entries,
+so the legend, the value labels and the per-block tooltip are what carry
+identity. Keep at least one of them on.
 
 ### Stable Balanced
 
